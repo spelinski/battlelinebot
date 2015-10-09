@@ -14,3 +14,9 @@ type Flag struct {
 type Board struct {
 	Flags [9]Flag
 }
+
+func (b *Board)HandleFlagClaimCommand(command []string) {
+	for i, claimer := range command {
+		b.Flags[i].Claimer = claimer
+	}
+}

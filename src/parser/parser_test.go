@@ -82,15 +82,6 @@ func TestFlagClaimStatusCommand(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag claim-status unclaimed north south unclaimed north south unclaimed north south")
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.pBoard.Flags[0].Claimer, "unclaimed")
-	assert.Equal(t, testParser.pBoard.Flags[1].Claimer, "north")
-	assert.Equal(t, testParser.pBoard.Flags[2].Claimer, "south")
-	assert.Equal(t, testParser.pBoard.Flags[3].Claimer, "unclaimed")
-	assert.Equal(t, testParser.pBoard.Flags[4].Claimer, "north")
-	assert.Equal(t, testParser.pBoard.Flags[5].Claimer, "south")
-	assert.Equal(t, testParser.pBoard.Flags[6].Claimer, "unclaimed")
-	assert.Equal(t, testParser.pBoard.Flags[7].Claimer, "north")
-	assert.Equal(t, testParser.pBoard.Flags[8].Claimer, "south")
 }
 
 func TestFlagCardsCommandEmptyFlagOneNorth(t *testing.T) {

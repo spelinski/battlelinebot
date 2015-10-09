@@ -52,9 +52,7 @@ func (p *Parser) ParseString(command string) {
 		}
 	} else if len(flagClaimMatch) > 0 {
 		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
-		for i, claimer := range flagClaimMatch {
-			p.pBoard.Flags[i].Claimer = claimer
-		}
+		p.pBoard.HandleFlagClaimCommand(flagClaimMatch)
 	} else if len(flagCardMatch) > 0 {
 		flagIndex, _ := strconv.Atoi(flagCardMatch[1])
 		flagDirection := flagCardMatch[2]

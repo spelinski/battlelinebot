@@ -4,32 +4,18 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"board"
 )
 
 var BotVisualName string = "SynergyBot"
-
-type Card struct {
-	color  string
-	number int
-}
-
-type Flag struct {
-	claimer string
-	north   []Card
-	south   []Card
-}
-
-type Board struct {
-	flags [9]Flag
-}
 
 type Parser struct {
 	visualName          string
 	direction           string
 	lastCommandWasKnown bool
 	colors              []string
-	hand                []Card
-	board               Board
+	hand                []board.Card
+	pBoard               board.Board
 }
 
 func (p *Parser) ParseString(command string) {
@@ -61,29 +47,29 @@ func (p *Parser) ParseString(command string) {
 		for _, card := range handMatch {
 			cardDetails := strings.Split(card, ",")
 			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := Card{cardDetails[0], cardNumber}
+			nextCard := board.Card{cardDetails[0], cardNumber}
 			p.hand = append(p.hand, nextCard)
 		}
 	} else if len(flagClaimMatch) > 0 {
 		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
 		for i, claimer := range flagClaimMatch {
-			p.board.flags[i].claimer = claimer
+			p.pBoard.Flags[i].Claimer = claimer
 		}
 	} else if len(flagCardMatch) > 0 {
 		flagIndex, _ := strconv.Atoi(flagCardMatch[1])
 		flagDirection := flagCardMatch[2]
 		flagCardMatch = strings.Split(flagCardMatch[3], " ")
-		tempFlagCardsList := []Card{}
+		tempFlagCardsList := []board.Card{}
 		for _, card := range flagCardMatch {
 			cardDetails := strings.Split(card, ",")
 			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := Card{cardDetails[0], cardNumber}
+			nextCard := board.Card{cardDetails[0], cardNumber}
 			tempFlagCardsList = append(tempFlagCardsList, nextCard)
 		}
 		if flagDirection == "north" {
-			p.board.flags[flagIndex-1].north = tempFlagCardsList
+			p.pBoard.Flags[flagIndex-1].North = tempFlagCardsList
 		} else {
-			p.board.flags[flagIndex-1].south = tempFlagCardsList
+			p.pBoard.Flags[flagIndex-1].South = tempFlagCardsList
 		}
 	} else if len(opponentPlayMatch) > 0 {
 		//Not doing anything with this right now

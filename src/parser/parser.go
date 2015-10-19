@@ -1,10 +1,10 @@
 package parser
 
 import (
+	"board"
 	"regexp"
 	"strconv"
 	"strings"
-	"board"
 )
 
 var BotVisualName string = "SynergyBot"
@@ -15,7 +15,7 @@ type Parser struct {
 	lastCommandWasKnown bool
 	colors              []string
 	hand                []board.Card
-	pBoard               board.Board
+	pBoard              board.Board
 }
 
 func (p *Parser) ParseString(command string) {
@@ -24,6 +24,7 @@ func (p *Parser) ParseString(command string) {
 	handRegex := regexp.MustCompile("player.*hand\\s(.*,.*)*")
 	flagClaimRegex := regexp.MustCompile("flag claim-status\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)")
 	flagCardRegex := regexp.MustCompile("flag ([1-9]) cards (north|south) (.*)")
+	emptyFlagCardRegex := regexp.MustCompile("flag ([1-9]) cards (north|south)")
 	opponentPlayRegex := regexp.MustCompile("opponent play ([1-9]) (.*)")
 
 	nameMatch := NameRegex.FindStringSubmatch(command)
@@ -31,6 +32,7 @@ func (p *Parser) ParseString(command string) {
 	handMatch := handRegex.FindStringSubmatch(command)
 	flagClaimMatch := flagClaimRegex.FindStringSubmatch(command)
 	flagCardMatch := flagCardRegex.FindStringSubmatch(command)
+	emptyFlagCardMatch := emptyFlagCardRegex.FindStringSubmatch(command)
 	opponentPlayMatch := opponentPlayRegex.FindStringSubmatch(command)
 	goPlayMatch, _ := regexp.MatchString("go play-card", command)
 	p.lastCommandWasKnown = true
@@ -54,21 +56,10 @@ func (p *Parser) ParseString(command string) {
 		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
 		p.pBoard.HandleFlagClaimCommand(flagClaimMatch)
 	} else if len(flagCardMatch) > 0 {
-		flagIndex, _ := strconv.Atoi(flagCardMatch[1])
-		flagDirection := flagCardMatch[2]
-		flagCardMatch = strings.Split(flagCardMatch[3], " ")
-		tempFlagCardsList := []board.Card{}
-		for _, card := range flagCardMatch {
-			cardDetails := strings.Split(card, ",")
-			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := board.Card{cardDetails[0], cardNumber}
-			tempFlagCardsList = append(tempFlagCardsList, nextCard)
-		}
-		if flagDirection == "north" {
-			p.pBoard.Flags[flagIndex-1].North = tempFlagCardsList
-		} else {
-			p.pBoard.Flags[flagIndex-1].South = tempFlagCardsList
-		}
+		flagIndex, flagDirection, cards := getFlagCardMatchInfo(flagCardMatch)
+		p.pBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
+	} else if len(emptyFlagCardMatch) > 0 {
+		//Not doing anything with this right now
 	} else if len(opponentPlayMatch) > 0 {
 		//Not doing anything with this right now
 	} else if goPlayMatch {
@@ -76,4 +67,11 @@ func (p *Parser) ParseString(command string) {
 	} else {
 		p.lastCommandWasKnown = false
 	}
+}
+
+func getFlagCardMatchInfo(command []string) (int, string, []string) {
+	flagIndex, _ := strconv.Atoi(command[1])
+	flagDirection := command[2]
+	cards := strings.Split(command[3], " ")
+	return flagIndex, flagDirection, cards
 }

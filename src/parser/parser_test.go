@@ -1,9 +1,9 @@
 package parser
 
 import (
+	"board"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"board"
 )
 
 func TestEmptyString(t *testing.T) {
@@ -87,38 +87,30 @@ func TestFlagClaimStatusCommand(t *testing.T) {
 func TestFlagCardsCommandEmptyFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north")
-	assert.False(t, testParser.lastCommandWasKnown)
+	assert.True(t, testParser.lastCommandWasKnown)
 }
 
 func TestFlagCardsCommandOneCardFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north color1,1")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []board.Card{board.Card{"color1", 1}}
-	assert.Equal(t, testParser.pBoard.Flags[0].North, testCardSlice)
 }
 
 func TestFlagCardsCommandFullFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north color1,1 color2,2 color3,3")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []board.Card{board.Card{"color1", 1}, board.Card{"color2", 2}, board.Card{"color3", 3}}
-	assert.Equal(t, testParser.pBoard.Flags[0].North, testCardSlice)
 }
 func TestFlagCardsCommandOneCardFlagTwoSouth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 2 cards south color2,2")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []board.Card{board.Card{"color2", 2}}
-	assert.Equal(t, testParser.pBoard.Flags[1].South, testCardSlice)
 }
 
 func TestFlagCardsCommandFullFlagTwoSouth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 2 cards south color1,1 color2,2 color3,3")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []board.Card{board.Card{"color1", 1}, board.Card{"color2", 2}, board.Card{"color3", 3}}
-	assert.Equal(t, testParser.pBoard.Flags[1].South, testCardSlice)
 }
 
 func TestOppentPlayCommand(t *testing.T) {

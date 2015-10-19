@@ -1,6 +1,7 @@
 package board
 
 import (
+	"card"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -26,7 +27,7 @@ func TestHandleFlagAddCardCommandOneCardFlagOneNorth(t *testing.T) {
 	flagDirection := "north"
 	cards := []string{"color1,1"}
 	testBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
-	testCardSlice := []Card{Card{"color1", 1}}
+	testCardSlice := []card.Card{card.Card{"color1", 1}}
 	assert.Equal(t, testBoard.Flags[0].North, testCardSlice)
 }
 
@@ -36,7 +37,7 @@ func TestHandleFlagAddCardCommandFullFlagOneNorth(t *testing.T) {
 	flagDirection := "north"
 	cards := []string{"color1,1", "color2,2", "color3,3"}
 	testBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
-	testCardSlice := []Card{Card{"color1", 1}, Card{"color2", 2}, Card{"color3", 3}}
+	testCardSlice := []card.Card{card.Card{"color1", 1}, card.Card{"color2", 2}, card.Card{"color3", 3}}
 	assert.Equal(t, testBoard.Flags[0].North, testCardSlice)
 }
 
@@ -46,7 +47,7 @@ func TestHandleFlagAddCardCommandOneCardFlagTwoSouth(t *testing.T) {
 	flagDirection := "south"
 	cards := []string{"color2,2"}
 	testBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
-	testCardSlice := []Card{Card{"color2", 2}}
+	testCardSlice := []card.Card{card.Card{"color2", 2}}
 	assert.Equal(t, testBoard.Flags[1].South, testCardSlice)
 }
 
@@ -56,6 +57,6 @@ func TestHandleFlagAddCardCommandFullFlagTwoSouth(t *testing.T) {
 	flagDirection := "south"
 	cards := []string{"color1,1", "color2,2", "color3,3"}
 	testBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
-	testCardSlice := []Card{Card{"color1", 1}, Card{"color2", 2}, Card{"color3", 3}}
+	testCardSlice := []card.Card{card.Card{"color1", 1}, card.Card{"color2", 2}, card.Card{"color3", 3}}
 	assert.Equal(t, testBoard.Flags[1].South, testCardSlice)
 }

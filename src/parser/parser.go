@@ -2,24 +2,20 @@ package parser
 
 import (
 	"board"
+	"player"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-var BotVisualName string = "SynergyBot"
-
 type Parser struct {
-	visualName          string
-	direction           string
+	player              player.Player
 	lastCommandWasKnown bool
-	colors              []string
-	hand                []board.Card
 	pBoard              board.Board
 }
 
 func (p *Parser) ParseString(command string) {
-	NameRegex := regexp.MustCompile("player\\s(.*)\\sname")
+	nameRegex := regexp.MustCompile("player\\s(.*)\\sname")
 	colorsRegex := regexp.MustCompile("colors\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)")
 	handRegex := regexp.MustCompile("player.*hand\\s(.*,.*)*")
 	flagClaimRegex := regexp.MustCompile("flag claim-status\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)")
@@ -27,7 +23,7 @@ func (p *Parser) ParseString(command string) {
 	emptyFlagCardRegex := regexp.MustCompile("flag ([1-9]) cards (north|south)")
 	opponentPlayRegex := regexp.MustCompile("opponent play ([1-9]) (.*)")
 
-	nameMatch := NameRegex.FindStringSubmatch(command)
+	nameMatch := nameRegex.FindStringSubmatch(command)
 	colorsMatch := colorsRegex.FindStringSubmatch(command)
 	handMatch := handRegex.FindStringSubmatch(command)
 	flagClaimMatch := flagClaimRegex.FindStringSubmatch(command)
@@ -37,21 +33,12 @@ func (p *Parser) ParseString(command string) {
 	goPlayMatch, _ := regexp.MatchString("go play-card", command)
 	p.lastCommandWasKnown = true
 	if len(nameMatch) > 0 {
-		p.visualName = BotVisualName
-		p.direction = nameMatch[1]
+		p.player.HandleRespondingToName(nameMatch[1])
 	} else if len(colorsMatch) > 0 {
-		colorsMatch = append(colorsMatch[:0], colorsMatch[1:]...)
-		for _, color := range colorsMatch {
-			p.colors = append(p.colors, color)
-		}
+		//Not doing anything with this right now
 	} else if len(handMatch) > 0 {
 		handMatch = strings.Split(handMatch[1], " ")
-		for _, card := range handMatch {
-			cardDetails := strings.Split(card, ",")
-			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := board.Card{cardDetails[0], cardNumber}
-			p.hand = append(p.hand, nextCard)
-		}
+		p.player.HandleHandUpdate(handMatch)
 	} else if len(flagClaimMatch) > 0 {
 		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
 		p.pBoard.HandleFlagClaimCommand(flagClaimMatch)

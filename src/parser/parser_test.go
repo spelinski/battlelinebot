@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"board"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -16,66 +15,30 @@ func TestBotNameNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player north name")
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.visualName, BotVisualName)
-	assert.Equal(t, testParser.direction, "north")
 }
 
 func TestBotNameSouth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player south name")
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.visualName, BotVisualName)
-	assert.Equal(t, testParser.direction, "south")
 }
 
 func TestColorsCommand(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("colors color1 color2 color3 color4 color5 color6")
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.colors[0], "color1")
-	assert.Equal(t, testParser.colors[1], "color2")
-	assert.Equal(t, testParser.colors[2], "color3")
-	assert.Equal(t, testParser.colors[3], "color4")
-	assert.Equal(t, testParser.colors[4], "color5")
-	assert.Equal(t, testParser.colors[5], "color6")
 }
 
 func TestHandCommandFull(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player north hand color1,1 color2,2 color3,3 color4,4 color5,5 color6,6 color1,7")
-	card1 := board.Card{"color1", 1}
-	card2 := board.Card{"color2", 2}
-	card3 := board.Card{"color3", 3}
-	card4 := board.Card{"color4", 4}
-	card5 := board.Card{"color5", 5}
-	card6 := board.Card{"color6", 6}
-	card7 := board.Card{"color1", 7}
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.hand[0], card1)
-	assert.Equal(t, testParser.hand[1], card2)
-	assert.Equal(t, testParser.hand[2], card3)
-	assert.Equal(t, testParser.hand[3], card4)
-	assert.Equal(t, testParser.hand[4], card5)
-	assert.Equal(t, testParser.hand[5], card6)
-	assert.Equal(t, testParser.hand[6], card7)
 }
 
 func TestHandCommandSixCards(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player north hand color1,1 color2,2 color3,3 color4,4 color5,5 color6,6")
-	card1 := board.Card{"color1", 1}
-	card2 := board.Card{"color2", 2}
-	card3 := board.Card{"color3", 3}
-	card4 := board.Card{"color4", 4}
-	card5 := board.Card{"color5", 5}
-	card6 := board.Card{"color6", 6}
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.hand[0], card1)
-	assert.Equal(t, testParser.hand[1], card2)
-	assert.Equal(t, testParser.hand[2], card3)
-	assert.Equal(t, testParser.hand[3], card4)
-	assert.Equal(t, testParser.hand[4], card5)
-	assert.Equal(t, testParser.hand[5], card6)
 }
 
 func TestFlagClaimStatusCommand(t *testing.T) {

@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"board"
 	"regexp"
 	"strconv"
 	"strings"
@@ -8,28 +9,13 @@ import (
 
 var BotVisualName string = "SynergyBot"
 
-type Card struct {
-	color  string
-	number int
-}
-
-type Flag struct {
-	claimer string
-	north   []Card
-	south   []Card
-}
-
-type Board struct {
-	flags [9]Flag
-}
-
 type Parser struct {
 	visualName          string
 	direction           string
 	lastCommandWasKnown bool
 	colors              []string
-	hand                []Card
-	board               Board
+	hand                []board.Card
+	pBoard              board.Board
 }
 
 func (p *Parser) ParseString(command string) {
@@ -38,6 +24,7 @@ func (p *Parser) ParseString(command string) {
 	handRegex := regexp.MustCompile("player.*hand\\s(.*,.*)*")
 	flagClaimRegex := regexp.MustCompile("flag claim-status\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)")
 	flagCardRegex := regexp.MustCompile("flag ([1-9]) cards (north|south) (.*)")
+	emptyFlagCardRegex := regexp.MustCompile("flag ([1-9]) cards (north|south)")
 	opponentPlayRegex := regexp.MustCompile("opponent play ([1-9]) (.*)")
 
 	nameMatch := NameRegex.FindStringSubmatch(command)
@@ -45,6 +32,7 @@ func (p *Parser) ParseString(command string) {
 	handMatch := handRegex.FindStringSubmatch(command)
 	flagClaimMatch := flagClaimRegex.FindStringSubmatch(command)
 	flagCardMatch := flagCardRegex.FindStringSubmatch(command)
+	emptyFlagCardMatch := emptyFlagCardRegex.FindStringSubmatch(command)
 	opponentPlayMatch := opponentPlayRegex.FindStringSubmatch(command)
 	goPlayMatch, _ := regexp.MatchString("go play-card", command)
 	p.lastCommandWasKnown = true
@@ -61,30 +49,17 @@ func (p *Parser) ParseString(command string) {
 		for _, card := range handMatch {
 			cardDetails := strings.Split(card, ",")
 			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := Card{cardDetails[0], cardNumber}
+			nextCard := board.Card{cardDetails[0], cardNumber}
 			p.hand = append(p.hand, nextCard)
 		}
 	} else if len(flagClaimMatch) > 0 {
 		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
-		for i, claimer := range flagClaimMatch {
-			p.board.flags[i].claimer = claimer
-		}
+		p.pBoard.HandleFlagClaimCommand(flagClaimMatch)
 	} else if len(flagCardMatch) > 0 {
-		flagIndex, _ := strconv.Atoi(flagCardMatch[1])
-		flagDirection := flagCardMatch[2]
-		flagCardMatch = strings.Split(flagCardMatch[3], " ")
-		tempFlagCardsList := []Card{}
-		for _, card := range flagCardMatch {
-			cardDetails := strings.Split(card, ",")
-			cardNumber, _ := strconv.Atoi(cardDetails[1])
-			nextCard := Card{cardDetails[0], cardNumber}
-			tempFlagCardsList = append(tempFlagCardsList, nextCard)
-		}
-		if flagDirection == "north" {
-			p.board.flags[flagIndex-1].north = tempFlagCardsList
-		} else {
-			p.board.flags[flagIndex-1].south = tempFlagCardsList
-		}
+		flagIndex, flagDirection, cards := getFlagCardMatchInfo(flagCardMatch)
+		p.pBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
+	} else if len(emptyFlagCardMatch) > 0 {
+		//Not doing anything with this right now
 	} else if len(opponentPlayMatch) > 0 {
 		//Not doing anything with this right now
 	} else if goPlayMatch {
@@ -92,4 +67,11 @@ func (p *Parser) ParseString(command string) {
 	} else {
 		p.lastCommandWasKnown = false
 	}
+}
+
+func getFlagCardMatchInfo(command []string) (int, string, []string) {
+	flagIndex, _ := strconv.Atoi(command[1])
+	flagDirection := command[2]
+	cards := strings.Split(command[3], " ")
+	return flagIndex, flagDirection, cards
 }

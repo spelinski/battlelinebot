@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"board"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -42,13 +43,13 @@ func TestColorsCommand(t *testing.T) {
 func TestHandCommandFull(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player north hand color1,1 color2,2 color3,3 color4,4 color5,5 color6,6 color1,7")
-	card1 := Card{"color1", 1}
-	card2 := Card{"color2", 2}
-	card3 := Card{"color3", 3}
-	card4 := Card{"color4", 4}
-	card5 := Card{"color5", 5}
-	card6 := Card{"color6", 6}
-	card7 := Card{"color1", 7}
+	card1 := board.Card{"color1", 1}
+	card2 := board.Card{"color2", 2}
+	card3 := board.Card{"color3", 3}
+	card4 := board.Card{"color4", 4}
+	card5 := board.Card{"color5", 5}
+	card6 := board.Card{"color6", 6}
+	card7 := board.Card{"color1", 7}
 	assert.True(t, testParser.lastCommandWasKnown)
 	assert.Equal(t, testParser.hand[0], card1)
 	assert.Equal(t, testParser.hand[1], card2)
@@ -62,12 +63,12 @@ func TestHandCommandFull(t *testing.T) {
 func TestHandCommandSixCards(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("player north hand color1,1 color2,2 color3,3 color4,4 color5,5 color6,6")
-	card1 := Card{"color1", 1}
-	card2 := Card{"color2", 2}
-	card3 := Card{"color3", 3}
-	card4 := Card{"color4", 4}
-	card5 := Card{"color5", 5}
-	card6 := Card{"color6", 6}
+	card1 := board.Card{"color1", 1}
+	card2 := board.Card{"color2", 2}
+	card3 := board.Card{"color3", 3}
+	card4 := board.Card{"color4", 4}
+	card5 := board.Card{"color5", 5}
+	card6 := board.Card{"color6", 6}
 	assert.True(t, testParser.lastCommandWasKnown)
 	assert.Equal(t, testParser.hand[0], card1)
 	assert.Equal(t, testParser.hand[1], card2)
@@ -81,52 +82,35 @@ func TestFlagClaimStatusCommand(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag claim-status unclaimed north south unclaimed north south unclaimed north south")
 	assert.True(t, testParser.lastCommandWasKnown)
-	assert.Equal(t, testParser.board.flags[0].claimer, "unclaimed")
-	assert.Equal(t, testParser.board.flags[1].claimer, "north")
-	assert.Equal(t, testParser.board.flags[2].claimer, "south")
-	assert.Equal(t, testParser.board.flags[3].claimer, "unclaimed")
-	assert.Equal(t, testParser.board.flags[4].claimer, "north")
-	assert.Equal(t, testParser.board.flags[5].claimer, "south")
-	assert.Equal(t, testParser.board.flags[6].claimer, "unclaimed")
-	assert.Equal(t, testParser.board.flags[7].claimer, "north")
-	assert.Equal(t, testParser.board.flags[8].claimer, "south")
 }
 
 func TestFlagCardsCommandEmptyFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north")
-	assert.False(t, testParser.lastCommandWasKnown)
+	assert.True(t, testParser.lastCommandWasKnown)
 }
 
 func TestFlagCardsCommandOneCardFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north color1,1")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []Card{Card{"color1", 1}}
-	assert.Equal(t, testParser.board.flags[0].north, testCardSlice)
 }
 
 func TestFlagCardsCommandFullFlagOneNorth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 1 cards north color1,1 color2,2 color3,3")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []Card{Card{"color1", 1}, Card{"color2", 2}, Card{"color3", 3}}
-	assert.Equal(t, testParser.board.flags[0].north, testCardSlice)
 }
 func TestFlagCardsCommandOneCardFlagTwoSouth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 2 cards south color2,2")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []Card{Card{"color2", 2}}
-	assert.Equal(t, testParser.board.flags[1].south, testCardSlice)
 }
 
 func TestFlagCardsCommandFullFlagTwoSouth(t *testing.T) {
 	testParser := Parser{}
 	testParser.ParseString("flag 2 cards south color1,1 color2,2 color3,3")
 	assert.True(t, testParser.lastCommandWasKnown)
-	testCardSlice := []Card{Card{"color1", 1}, Card{"color2", 2}, Card{"color3", 3}}
-	assert.Equal(t, testParser.board.flags[1].south, testCardSlice)
 }
 
 func TestOppentPlayCommand(t *testing.T) {

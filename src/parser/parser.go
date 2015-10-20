@@ -10,9 +10,8 @@ import (
 )
 
 type Parser struct {
-	player              player.Player
-	lastCommandWasKnown bool
-	pBoard              board.Board
+	Player              player.Player
+	Board               board.Board
 }
 
 const (
@@ -30,18 +29,18 @@ const (
 func (p *Parser) ParseString(command string) error {
 	commandType, parsedCommand := getCommandMatch(command)
 	if commandType == NAME_COMMAND {
-		p.player.HandleRespondingToName(parsedCommand[1])
+		p.Player.HandleRespondingToName(parsedCommand[1])
 	} else if commandType == COLORS_COMMAND {
 		//Not doing anything with this right now
 	} else if commandType == HAND_COMMAND {
 		parsedCommand = strings.Split(parsedCommand[1], " ")
-		p.player.HandleHandUpdate(parsedCommand)
+		p.Player.HandleHandUpdate(parsedCommand)
 	} else if commandType == FLAG_CLAIM_COMMAND {
 		parsedCommand = append(parsedCommand[:0], parsedCommand[1:]...)
-		p.pBoard.HandleFlagClaimCommand(parsedCommand)
+		p.Board.HandleFlagClaimCommand(parsedCommand)
 	} else if commandType == FLAG_CARD_COMMAND {
 		flagIndex, flagDirection, cards := getFlagCardMatchInfo(parsedCommand)
-		p.pBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
+		p.Board.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
 	} else if commandType == EMPTY_FLAG_CARD_COMMAND {
 		//Not doing anything with this right now
 	} else if commandType == OPPONENT_PLAY_COMMAND {

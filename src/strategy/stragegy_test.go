@@ -28,7 +28,7 @@ func handleStdOut(testPlayer player.Player, boardInfo board.Board) string {
     return out
 }
 
-func TestHandleGoPlayCommandEmptyBoardPlayerNorth(t *testing.T) {
+func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "north"
     hand := []card.Card{card.Card{"color1",1},
@@ -40,6 +40,7 @@ func TestHandleGoPlayCommandEmptyBoardPlayerNorth(t *testing.T) {
                             card.Card{"color1",7}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,out, "play 1 color1,1\n" )
 }
@@ -60,11 +61,13 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
                                         card.Card{"color1",8}}
     testBoard := board.Board{}
     testBoard.Flags[0].North = flagOneNorthCards
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,out, "play 2 color1,1\n" )
 }
 
-func TestHandleGoPlayCommandEmptyBoardPlayerSouth(t *testing.T) {
+func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     hand := []card.Card{card.Card{"color1",1},
@@ -76,6 +79,7 @@ func TestHandleGoPlayCommandEmptyBoardPlayerSouth(t *testing.T) {
                             card.Card{"color1",7}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,out, "play 1 color1,1\n" )
 }
@@ -96,6 +100,26 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
                                         card.Card{"color1",8}}
     testBoard := board.Board{}
     testBoard.Flags[0].South = flagOneSouthCards
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,out, "play 2 color1,1\n" )
+}
+
+func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1",1},
+                            card.Card{"color2",2},
+                            card.Card{"color3",3},
+                            card.Card{"color4",4},
+                            card.Card{"color5",5},
+                            card.Card{"color6",6},
+                            card.Card{"color1",7}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "north"
+    testBoard.Flags[1].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,out, "play 2 color1,1\n" )
 }

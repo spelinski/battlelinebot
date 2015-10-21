@@ -24,11 +24,11 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
 
 func canPlay(flagAttempt board.Flag, direction string) bool {
     if direction == "north" {
-        if len(flagAttempt.North) < 3 {
+        if len(flagAttempt.North) < 3 && flagAttempt.Claimer == "unclaimed" {
             return true
         }
     } else {
-        if len(flagAttempt.South) < 3 {
+        if len(flagAttempt.South) < 3 && flagAttempt.Claimer == "unclaimed" {
             return true
         }   
     }

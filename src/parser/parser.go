@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+    "strategy"
 )
 
 type Parser struct {
@@ -46,7 +47,7 @@ func (p *Parser) ParseString(command string) error {
 	} else if commandType == OPPONENT_PLAY_COMMAND {
 		//Not doing anything with this right now
 	} else if commandType == GO_PLAY_COMMAND {
-		//Not doing anything with this right now
+		strategy.HandleGoPlayCommand(p.Player, p.Board)
 	} else {
 		return errors.New("Unkown command")
 	}

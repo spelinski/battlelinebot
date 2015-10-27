@@ -2,19 +2,59 @@ package parser
 
 import (
 	"board"
+	"errors"
 	"player"
 	"regexp"
 	"strconv"
 	"strings"
+    "strategy"
 )
 
 type Parser struct {
-	player              player.Player
-	lastCommandWasKnown bool
-	pBoard              board.Board
+	Player              player.Player
+	Board               board.Board
 }
 
-func (p *Parser) ParseString(command string) {
+const (
+	UNKNOWN_COMMAND = iota
+	NAME_COMMAND
+	COLORS_COMMAND
+	HAND_COMMAND
+	FLAG_CLAIM_COMMAND
+	FLAG_CARD_COMMAND
+	EMPTY_FLAG_CARD_COMMAND
+	OPPONENT_PLAY_COMMAND
+	GO_PLAY_COMMAND
+)
+
+func (p *Parser) ParseString(command string) error {
+	commandType, parsedCommand := getCommandMatch(command)
+	if commandType == NAME_COMMAND {
+		p.Player.HandleRespondingToName(parsedCommand[1])
+	} else if commandType == COLORS_COMMAND {
+		//Not doing anything with this right now
+	} else if commandType == HAND_COMMAND {
+		parsedCommand = strings.Split(parsedCommand[1], " ")
+		p.Player.HandleHandUpdate(parsedCommand)
+	} else if commandType == FLAG_CLAIM_COMMAND {
+		parsedCommand = append(parsedCommand[:0], parsedCommand[1:]...)
+		p.Board.HandleFlagClaimCommand(parsedCommand)
+	} else if commandType == FLAG_CARD_COMMAND {
+		flagIndex, flagDirection, cards := getFlagCardMatchInfo(parsedCommand)
+		p.Board.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
+	} else if commandType == EMPTY_FLAG_CARD_COMMAND {
+		//Not doing anything with this right now
+	} else if commandType == OPPONENT_PLAY_COMMAND {
+		//Not doing anything with this right now
+	} else if commandType == GO_PLAY_COMMAND {
+		strategy.HandleGoPlayCommand(p.Player, p.Board)
+	} else {
+		return errors.New("Unkown command")
+	}
+	return nil
+}
+
+func getCommandMatch(command string) (int, []string) {
 	nameRegex := regexp.MustCompile("player\\s(.*)\\sname")
 	colorsRegex := regexp.MustCompile("colors\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)\\s(.*)")
 	handRegex := regexp.MustCompile("player.*hand\\s(.*,.*)*")
@@ -31,28 +71,25 @@ func (p *Parser) ParseString(command string) {
 	emptyFlagCardMatch := emptyFlagCardRegex.FindStringSubmatch(command)
 	opponentPlayMatch := opponentPlayRegex.FindStringSubmatch(command)
 	goPlayMatch, _ := regexp.MatchString("go play-card", command)
-	p.lastCommandWasKnown = true
+
 	if len(nameMatch) > 0 {
-		p.player.HandleRespondingToName(nameMatch[1])
+		return NAME_COMMAND, nameMatch
 	} else if len(colorsMatch) > 0 {
-		//Not doing anything with this right now
+		return COLORS_COMMAND, colorsMatch
 	} else if len(handMatch) > 0 {
-		handMatch = strings.Split(handMatch[1], " ")
-		p.player.HandleHandUpdate(handMatch)
+		return HAND_COMMAND, handMatch
 	} else if len(flagClaimMatch) > 0 {
-		flagClaimMatch = append(flagClaimMatch[:0], flagClaimMatch[1:]...)
-		p.pBoard.HandleFlagClaimCommand(flagClaimMatch)
+		return FLAG_CLAIM_COMMAND, flagClaimMatch
 	} else if len(flagCardMatch) > 0 {
-		flagIndex, flagDirection, cards := getFlagCardMatchInfo(flagCardMatch)
-		p.pBoard.HandleFlagAddCardCommand(flagIndex, flagDirection, cards)
+		return FLAG_CARD_COMMAND, flagCardMatch
 	} else if len(emptyFlagCardMatch) > 0 {
-		//Not doing anything with this right now
+		return EMPTY_FLAG_CARD_COMMAND, emptyFlagCardMatch
 	} else if len(opponentPlayMatch) > 0 {
-		//Not doing anything with this right now
+		return OPPONENT_PLAY_COMMAND, opponentPlayMatch
 	} else if goPlayMatch {
-		//Not doing anything with this right now
+		return GO_PLAY_COMMAND, nil
 	} else {
-		p.lastCommandWasKnown = false
+		return UNKNOWN_COMMAND, nil
 	}
 }
 

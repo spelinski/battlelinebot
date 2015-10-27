@@ -71,5 +71,6 @@ func TestOppentPlayCommand(t *testing.T) {
 
 func TestGoPlayCommand(t *testing.T) {
 	testParser := Parser{}
+    testParser.ParseString("player north hand color1,1 color2,2 color3,3 color4,4 color5,5 color6,6 color1,7")
 	assert.Nil(t, testParser.ParseString("go play-card"))
 }

@@ -27,11 +27,12 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
             }
             if score > maxScore {
                 maxScore = score
+                finalCardToPlay = cardToPlay
                 playIndex = index+1
             }
         }
     }
-    return cardToPlay,playIndex
+    return finalCardToPlay,playIndex
 }
 
 func canPlay(flagAttempt board.Flag, direction string) bool {

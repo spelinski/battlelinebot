@@ -18,6 +18,7 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
     playIndex := 0
     cardToPlay := playerCards[0]
     score := 0
+    finalCardToPlay := cardToPlay
     for index := range flagOptions {
         if canPlay(flagOptions[index], direction) {
             if direction == "north" {

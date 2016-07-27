@@ -372,4 +372,83 @@ func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneLower(t *testing.T) {
     assert.Equal(t,"play 1 color4,4\n",out )
 }
 
-//Add above for rest of formations
+func TestShouldFinishPhalanxWithTwoCardsPlayed(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1", 1},
+                            card.Card{"color1",2},
+                            card.Card{"color2",6},
+                            card.Card{"color2",2},
+                            card.Card{"color3",1},
+                            card.Card{"color3",2},
+                            card.Card{"color4",4}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    testBoard.Flags[0].South = []card.Card{card.Card{"color3",6},
+                                                card.Card{"color4",6}}
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 1 color2,6\n",out )
+}
+
+func TestShouldFinishBattalionWithTwoCardsPlayed(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1", 1},
+                            card.Card{"color1",2},
+                            card.Card{"color2",6},
+                            card.Card{"color2",2},
+                            card.Card{"color3",1},
+                            card.Card{"color3",2},
+                            card.Card{"color6",4}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    testBoard.Flags[0].South = []card.Card{card.Card{"color6",1},
+                                                card.Card{"color6",9}}
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 1 color6,4\n",out )
+}
+
+func TestShouldFinishSkirmishWithTwoCardsPlayed(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1", 1},
+                            card.Card{"color1",7},
+                            card.Card{"color2",6},
+                            card.Card{"color2",2},
+                            card.Card{"color3",1},
+                            card.Card{"color3",2},
+                            card.Card{"color6",4}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    testBoard.Flags[0].South = []card.Card{card.Card{"color5",8},
+                                                card.Card{"color6",9}}
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 1 color1,7\n",out )
+}

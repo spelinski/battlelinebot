@@ -84,83 +84,102 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
 func getContinuationForWedge(myHand []card.Card, flagCardsMySide []card.Card) (card.Card) {
     continuationCard := card.Card{"color1", 0}
     if len(flagCardsMySide) == 1{
-        for index := range myHand {
-            valueBelow := flagCardsMySide[0].Number - 1
-            valueAbove := flagCardsMySide[0].Number + 1
-            if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == flagCardsMySide[0].Color {
-                return myHand[index]
-            }
-        }
+        continuationCard = checkHandForWedgeContinuation(myHand, flagCardsMySide[0], flagCardsMySide[0])
     } else if len(flagCardsMySide) == 2 {
         if flagCardsMySide[0].Color != flagCardsMySide[1].Color {
             return continuationCard
         }
         //first card is one higher than second card
         if flagCardsMySide[0].Number == (flagCardsMySide[1].Number+1) {
-            valueBelow := flagCardsMySide[1].Number-1
-            valueAbove := flagCardsMySide[0].Number+1
-            for index := range myHand {
-                if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == flagCardsMySide[0].Color {
-                    return myHand[index]
-                }
-            }
+            continuationCard = checkHandForWedgeContinuation(myHand, flagCardsMySide[1], flagCardsMySide[0])
         }
         //first card is one lower than second card
         if flagCardsMySide[0].Number == (flagCardsMySide[1].Number-1) {
-            valueBelow := flagCardsMySide[0].Number-1
-            valueAbove := flagCardsMySide[1].Number+1
-            for index := range myHand {
-                if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == flagCardsMySide[0].Color {
-                    return myHand[index]
-                }
-            }
+            continuationCard = checkHandForWedgeContinuation(myHand, flagCardsMySide[0], flagCardsMySide[1])
         }
     }
     return continuationCard
+}
+
+func checkHandForWedgeContinuation(myHand []card.Card, cardForValueBelow card.Card, cardForValueAbove card.Card) (card.Card) {
+    valueBelow := cardForValueBelow.Number - 1
+    valueAbove := cardForValueAbove.Number + 1
+    for index := range myHand {
+        if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == cardForValueBelow.Color {
+            return myHand[index]
+        }
+    }
+    return card.Card{"color1", 0}
 }
 
 func getContinuationForPhalanx(myHand []card.Card, flagCardsMySide []card.Card) (card.Card) {
     continuationCard := card.Card{"color1", 0}
-    if len(flagCardsMySide) <= 1{
-        for index := range myHand {
-            for indexSecond := range flagCardsMySide {
-                if myHand[index].Number == flagCardsMySide[indexSecond].Number {
-                    return myHand[index]
-                }
-            }
+    if len(flagCardsMySide) == 1{
+        continuationCard = checkHandForPhalanxContinuation(myHand, flagCardsMySide[0].Number)
+    } else if len(flagCardsMySide) == 2{
+        if flagCardsMySide[0].Number == flagCardsMySide[1].Number {
+            continuationCard = checkHandForPhalanxContinuation(myHand, flagCardsMySide[0].Number)
         }
     }
     return continuationCard
+}
+
+func checkHandForPhalanxContinuation( myHand[]card.Card, cardValueToMatch int) (card.Card) {
+    for index := range myHand {
+        if myHand[index].Number == cardValueToMatch {
+            return myHand[index]
+        }
+    }
+    return card.Card{"color1", 0}
 }
 
 func getContinuationForBattalion(myHand []card.Card, flagCardsMySide []card.Card) (card.Card) {
     continuationCard := card.Card{"color1", 0}
-    if len(flagCardsMySide) <= 1{
-        for index := range myHand {
-            for indexSecond := range flagCardsMySide {
-                if myHand[index].Color == flagCardsMySide[indexSecond].Color {
-                    return myHand[index]
-                }
-            }
+    if len(flagCardsMySide) == 1{
+        continuationCard = checkHandForBattalionContinuation(myHand, flagCardsMySide[0].Color)
+    } else if len(flagCardsMySide) == 2 {
+        if flagCardsMySide[0].Color == flagCardsMySide[1].Color{
+            continuationCard = checkHandForBattalionContinuation(myHand, flagCardsMySide[0].Color)
         }
     }
     return continuationCard
 }
 
+func checkHandForBattalionContinuation( myHand []card.Card, colorToMatch string) (card.Card) {
+    for index := range myHand {
+        if myHand[index].Color == colorToMatch {
+            return myHand[index]
+        }
+    }
+    return card.Card{"color1", 0}
+}
+
 func getContinuationForSkirmish(myHand []card.Card, flagCardsMySide []card.Card) (card.Card) {
     continuationCard := card.Card{"color1", 0}
-    if len(flagCardsMySide) <= 1{
-        for index := range myHand {
-            for indexSecond := range flagCardsMySide {
-                valueBelow := flagCardsMySide[indexSecond].Number - 1
-                valueAbove := flagCardsMySide[indexSecond].Number + 1
-                if myHand[index].Number == valueBelow || myHand[index].Number == valueAbove {
-                    return myHand[index]
-                }
-            }
+    if len(flagCardsMySide) == 1{
+        continuationCard = checkHandForSkirmishContinuation(myHand, flagCardsMySide[0], flagCardsMySide[0])
+    } else if len(flagCardsMySide) == 2 {
+        //first card is one higher than second card
+        if flagCardsMySide[0].Number == (flagCardsMySide[1].Number+1) {
+            continuationCard = checkHandForSkirmishContinuation(myHand, flagCardsMySide[1], flagCardsMySide[0])
+        }
+        //first card is one lower than second card
+        if flagCardsMySide[0].Number == (flagCardsMySide[1].Number-1) {
+            continuationCard = checkHandForSkirmishContinuation(myHand, flagCardsMySide[0], flagCardsMySide[1])
         }
     }
     return continuationCard
+}
+
+func checkHandForSkirmishContinuation(myHand []card.Card, cardForValueBelow card.Card, cardForValueAbove card.Card) (card.Card) {
+    valueBelow := cardForValueBelow.Number - 1
+    valueAbove := cardForValueAbove.Number + 1
+    for index := range myHand {
+        if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) {
+            return myHand[index]
+        }
+    }
+    return card.Card{"color1", 0}
 }
 
 func getHighestCardForHost(myHand []card.Card) (card.Card) {

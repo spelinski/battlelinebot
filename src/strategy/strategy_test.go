@@ -264,3 +264,29 @@ func TestContinueSkirmishOnFlagOne(t *testing.T) {
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,out, "play 1 color1,1\n" )
 }
+
+func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1", 1},
+                            card.Card{"color1",2},
+                            card.Card{"color2",1},
+                            card.Card{"color2",2},
+                            card.Card{"color3",1},
+                            card.Card{"color3",2},
+                            card.Card{"color4",1}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    testBoard.Flags[0].South = []card.Card{card.Card{"color6",5}}
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,out, "play 2 color1,2\n")
+}

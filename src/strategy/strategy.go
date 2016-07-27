@@ -73,6 +73,9 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
 
     cardToPlay = getHighestCardForHost(myHand)
     if cardToPlay.Number > 0 {
+        if len(flagCardsMySide) == 0 {
+            return 2,cardToPlay
+        }
         return 1,cardToPlay
     }
     return 0,cardToPlay

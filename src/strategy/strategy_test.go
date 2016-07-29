@@ -610,7 +610,7 @@ func TestGettingCombinationOfCardsByTwo(t *testing.T){
 
 }
 
-func TestGettingCombinationOfCardsByThree(t *testing.T){
+/*func TestGettingCombinationOfCardsByThree(t *testing.T){
     threeCardList := []card.Card{card.Card{"color1",1}, card.Card{"color1",2}, card.Card{"color1",3}}
     actualCombos := cardCombinations (threeCardList, 3)
     expectedCombos := [][]card.Card{}

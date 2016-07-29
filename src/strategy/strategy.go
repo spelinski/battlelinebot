@@ -248,12 +248,13 @@ func cardCombinations (cardList []card.Card, numberOfCards int) ([][]card.Card) 
 
 //Pulled from https://play.golang.org/p/JEgfXR2zSH
 func combinations(iterable []card.Card, r int) ([][]card.Card) {
+
     outerCombination := [][]card.Card{}
     pool := iterable
     n := len(pool)
 
     if r > n {
-        return [][]card.Card{}
+        return outerCombination
     }
 
     indices := make([]int, r)
@@ -265,12 +266,7 @@ func combinations(iterable []card.Card, r int) ([][]card.Card) {
     for i, el := range indices {
         result[i] = pool[el]
     }
-    outerCombination = append(outerCombination, result)
-    fmt.Println(result)
-    fmt.Println("first outer")
-    fmt.Println(outerCombination)
-    fmt.Println("end first outer")
-
+    outerCombination = copySliceToEndOfOtherSliceOfSlices(outerCombination, result)
     for {
         i := r - 1
         for ; i >= 0 && indices[i] == i+n-r; i -= 1 {
@@ -288,14 +284,17 @@ func combinations(iterable []card.Card, r int) ([][]card.Card) {
         for ; i < len(indices); i += 1 {
             result[i] = pool[indices[i]]
         }
-        outerCombination = append(outerCombination, result)
-        fmt.Println(result)
-        fmt.Println("outer")
-        fmt.Println(outerCombination)
-        fmt.Println("end outer")
-
+        outerCombination = copySliceToEndOfOtherSliceOfSlices(outerCombination, result)
     }
+}
 
-    return outerCombination
+func copySliceToEndOfOtherSliceOfSlices( destination [][]card.Card, stuffToCopy []card.Card) ([][]card.Card) {
+    tempSlice := make([]card.Card, len(stuffToCopy))
+    for index := range stuffToCopy {
+        a := stuffToCopy[index]
+        tempSlice[index] = a
+    }
+    destination = append(destination, tempSlice)
 
+    return destination
 }

@@ -87,7 +87,10 @@ func TestInitTroopDeck(t *testing.T) {
                                     card.Card{"color4",10}, card.Card{"color5",1},card.Card{"color5",2},
                                     card.Card{"color5",3}, card.Card{"color5",4}, card.Card{"color5",5},
                                     card.Card{"color5",6}, card.Card{"color5",7}, card.Card{"color5",8},
-                                    card.Card{"color5",9}, card.Card{"color5",10}}
+                                    card.Card{"color5",9}, card.Card{"color5",10}, card.Card{"color6",1},
+                                    card.Card{"color6",2}, card.Card{"color6",3}, card.Card{"color6",4},
+                                    card.Card{"color6",5}, card.Card{"color6",6}, card.Card{"color6",7},
+                                    card.Card{"color6",8}, card.Card{"color6",9}, card.Card{"color6",10}}
     assert.Equal(t, expectedTroopDeck, testBoard.TroopDeck)
 }
 
@@ -111,7 +114,11 @@ func TestGetAllUnplayedCards(t *testing.T) {
                                     card.Card{"color4",9}, card.Card{"color4",10}, card.Card{"color5",1},
                                     card.Card{"color5",2}, card.Card{"color5",3}, card.Card{"color5",4},
                                     card.Card{"color5",5}, card.Card{"color5",6}, card.Card{"color5",7},
-                                    card.Card{"color5",8}, card.Card{"color5",9}, card.Card{"color5",10}}
+                                    card.Card{"color5",8}, card.Card{"color5",9}, card.Card{"color5",10},
+                                    card.Card{"color6",1}, card.Card{"color6",2}, card.Card{"color6",3},
+                                    card.Card{"color6",4}, card.Card{"color6",5}, card.Card{"color6",6},
+                                    card.Card{"color6",7}, card.Card{"color6",8}, card.Card{"color6",9},
+                                    card.Card{"color6",10}}
     actualUnplayedCards := testBoard.GetUnplayedCards()
     assert.Equal(t, expectedUnplayedCards, actualUnplayedCards)
 }

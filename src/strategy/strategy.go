@@ -9,11 +9,11 @@ import (
 )
 
 func HandleGoPlayCommand(playerInfo player.Player, boardInfo board.Board) {
-    playCard,flagToPlay := getBestCardAndFlagToPlayOn(boardInfo.Flags,playerInfo.Hand,playerInfo.Direction)
+    playCard,flagToPlay := getBestCardAndFlagToPlayOn(boardInfo.Flags,playerInfo.Hand,playerInfo.Direction, boardInfo)
     fmt.Println("play " + strconv.Itoa(flagToPlay) + " " + playCard.Color + "," + strconv.Itoa(playCard.Number))
 }
 
-func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Card, direction string) (card.Card,int) {
+func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Card, direction string, boardInfo board.Board) (card.Card,int) {
     maxScore := 0
     playIndex := 0
     cardToPlay := playerCards[0]
@@ -22,9 +22,9 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
     for index := range flagOptions {
         if canPlay(flagOptions[index], direction) {
             if direction == "north" {
-                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].North, playerCards)
+                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].North, playerCards, boardInfo)
             } else {
-                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].South, playerCards)
+                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].South, playerCards, boardInfo)
             }
             if score > maxScore {
                 maxScore = score
@@ -49,34 +49,43 @@ func canPlay(flagAttempt board.Flag, direction string) bool {
     return false
 }
 
-func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Card) (int, card.Card) {
+func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Card, myBoard board.Board) (int, card.Card) {
     cardToPlay := card.Card{"color1", 0}
-    cardToPlay = getContinuationForWedge(myHand, flagCardsMySide)
-    if cardToPlay.Number > 0 {
-        return 10,cardToPlay
-    }
-    
-    cardToPlay = getContinuationForPhalanx(myHand, flagCardsMySide)
-    if cardToPlay.Number > 0 {
-        return 9,cardToPlay
-    }
 
-    cardToPlay = getContinuationForBattalion(myHand, flagCardsMySide)
-    if cardToPlay.Number > 0 {
-        return 8,cardToPlay
-    }
+    bestFormation := getBestFormation(flagCardsMySide, myBoard)
+    switch bestFormation{
+        case "wedge":
+            cardToPlay = getContinuationForWedge(myHand, flagCardsMySide)
+            if cardToPlay.Number > 0 {
+                return 10,cardToPlay
+            }
 
-    cardToPlay = getContinuationForSkirmish(myHand, flagCardsMySide)
-    if cardToPlay.Number > 0 {
-        return 7,cardToPlay
-    }
+        case "phalanx":
+            cardToPlay = getContinuationForPhalanx(myHand, flagCardsMySide)
+            if cardToPlay.Number > 0 {
+                return 9,cardToPlay
+            }
 
-    cardToPlay = getHighestCardForHost(myHand)
-    if cardToPlay.Number > 0 {
-        if len(flagCardsMySide) == 0 {
-            return 6,cardToPlay
-        }
-        return 1,cardToPlay
+        case "battalion":
+            cardToPlay = getContinuationForBattalion(myHand, flagCardsMySide)
+            if cardToPlay.Number > 0 {
+                return 8,cardToPlay
+            }
+
+        case "skirmish":
+            cardToPlay = getContinuationForSkirmish(myHand, flagCardsMySide)
+            if cardToPlay.Number > 0 {
+                return 7,cardToPlay
+            }
+
+        case "host":
+            cardToPlay = getHighestCardForHost(myHand)
+            if cardToPlay.Number > 0 {
+                if len(flagCardsMySide) == 0 {
+                    return 6,cardToPlay
+                }
+                return 1,cardToPlay
+            }
     }
     return 0,cardToPlay
 }
@@ -224,28 +233,108 @@ func getBestFormation(cardsMySide []card.Card, currentBoard board.Board) (string
                 case "wedge":
                     return max_formation
                 case "phalanx":
-                    if checkForHigherThanPhalanx() {
-                        
-                    }
+                    max_formation = checkForHigherThanPhalanx(cardsMySide, myCardCombinations[index])
+                case "battalion":
+                    max_formation = checkForHigherThanBattalion(cardsMySide, myCardCombinations[index])
+                case "skirmish":
+                    max_formation = checkForHigherThanSkirmish(cardsMySide, myCardCombinations[index])
+                case "host":
+                    max_formation = checkForHigherThanHost(cardsMySide, myCardCombinations[index])
             }
-            if max_formation == "wedge" {
-                return max_formation
-            } else if max_formation
         }
     }
     return max_formation
 }
 
-/*def __get_max_strength_formation(self, options, unplayed_cards):
-        max_formation_object = Formation(max_formation)
-        for combo in itertools.combinations(unplayed_cards, number_of_cards_left):
-            formation = options + list(combo)
-            if Formation(formation).is_greater_strength_than(max_formation_object):
-                max_formation = formation
-                max_formation_object = Formation(formation)
-        return max_formation*/
+func checkForHigherThanPhalanx(fixedCardsMySide []card.Card, cardCombo []card.Card) (string) {
+    cardToPlayWedge := card.Card{"color1", 0}
+    if len(cardCombo) == 1 {
+        cardToPlayWedge = getContinuationForWedge(cardCombo, fixedCardsMySide)
+    } else {
+        cardToPlayWedge = getContinuationForWedge(fixedCardsMySide, cardCombo)
+    }
+    if cardToPlayWedge.Number > 0 {
+        return "wedge"
+    }
+    return "phalanx"
+}
 
-func cardCombinations (cardList []card.Card, numberOfCards int) ([][]card.Card) {
+func checkForHigherThanBattalion(fixedCardsMySide []card.Card, cardCombo []card.Card) (string) {
+    cardToPlayPhalanx := card.Card{"color1", 0}
+    cardToPlayWedge := card.Card{"color1", 0}
+    if len(cardCombo) == 1 {
+        cardToPlayPhalanx = getContinuationForPhalanx(cardCombo, fixedCardsMySide)
+        cardToPlayWedge = getContinuationForWedge(cardCombo, fixedCardsMySide)
+    } else {
+        cardToPlayPhalanx = getContinuationForPhalanx(fixedCardsMySide, cardCombo)
+        cardToPlayWedge = getContinuationForWedge(fixedCardsMySide, cardCombo)
+    }
+    if cardToPlayWedge.Number > 0 {
+        return "wedge"
+    }
+    if cardToPlayPhalanx.Number > 0 {
+        return "phalanx"
+    }
+    return "battalion"
+}
+
+func checkForHigherThanSkirmish(fixedCardsMySide []card.Card, cardCombo []card.Card) (string) {
+    cardToPlayBattalion := card.Card{"color1", 0}
+    cardToPlayPhalanx := card.Card{"color1", 0}
+    cardToPlayWedge := card.Card{"color1", 0}
+    if len(cardCombo) == 1 {
+        cardToPlayBattalion = getContinuationForBattalion(cardCombo, fixedCardsMySide)
+        cardToPlayPhalanx = getContinuationForPhalanx(cardCombo, fixedCardsMySide)
+        cardToPlayWedge = getContinuationForWedge(cardCombo, fixedCardsMySide)
+    } else {
+        cardToPlayBattalion = getContinuationForBattalion(fixedCardsMySide, cardCombo)
+        cardToPlayPhalanx = getContinuationForPhalanx(fixedCardsMySide, cardCombo)
+        cardToPlayWedge = getContinuationForWedge(fixedCardsMySide, cardCombo)
+    }
+    if cardToPlayWedge.Number > 0 {
+        return "wedge"
+    }
+    if cardToPlayPhalanx.Number > 0 {
+        return "phalanx"
+    }
+    if cardToPlayBattalion.Number > 0 {
+        return "battalion"
+    }
+    return "skirmish"
+}
+
+func checkForHigherThanHost(fixedCardsMySide []card.Card, cardCombo []card.Card) (string) {
+    cardToPlaySkirmish := card.Card{"color1", 0}
+    cardToPlayBattalion := card.Card{"color1", 0}
+    cardToPlayPhalanx := card.Card{"color1", 0}
+    cardToPlayWedge := card.Card{"color1", 0}
+    if len(cardCombo) == 1 {
+        cardToPlaySkirmish = getContinuationForSkirmish(cardCombo, fixedCardsMySide)
+        cardToPlayBattalion = getContinuationForBattalion(cardCombo, fixedCardsMySide)
+        cardToPlayPhalanx = getContinuationForPhalanx(cardCombo, fixedCardsMySide)
+        cardToPlayWedge = getContinuationForWedge(cardCombo, fixedCardsMySide)
+    } else {
+        cardToPlaySkirmish = getContinuationForSkirmish(fixedCardsMySide, cardCombo)
+        cardToPlayBattalion = getContinuationForBattalion(fixedCardsMySide, cardCombo)
+        cardToPlayPhalanx = getContinuationForPhalanx(fixedCardsMySide, cardCombo)
+        cardToPlayWedge = getContinuationForWedge(fixedCardsMySide, cardCombo)
+    }
+    if cardToPlayWedge.Number > 0 {
+        return "wedge"
+    }
+    if cardToPlayPhalanx.Number > 0 {
+        return "phalanx"
+    }
+    if cardToPlayBattalion.Number > 0 {
+        return "battalion"
+    }
+    if cardToPlaySkirmish.Number > 0 {
+        return "skirmish"
+    }
+    return "host"
+}
+
+func cardCombinations(cardList []card.Card, numberOfCards int) ([][]card.Card) {
     combinationsOfCards := [][]card.Card{}
     if numberOfCards > 1 {
         combinationsOfCards = combinations(cardList, numberOfCards)

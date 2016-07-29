@@ -610,7 +610,7 @@ func TestGettingCombinationOfCardsByTwo(t *testing.T){
 
 }
 
-/*func TestGettingCombinationOfCardsByThree(t *testing.T){
+func TestGettingCombinationOfCardsByThree(t *testing.T){
     threeCardList := []card.Card{card.Card{"color1",1}, card.Card{"color1",2}, card.Card{"color1",3}}
     actualCombos := cardCombinations (threeCardList, 3)
     expectedCombos := [][]card.Card{}
@@ -619,7 +619,7 @@ func TestGettingCombinationOfCardsByTwo(t *testing.T){
 
 }
 
-/*func TestGetBestFlagFormationWedge(t *testing.T){
+func TestGetBestFlagFormationWedge(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     hand := []card.Card{card.Card{"color1", 9},
@@ -644,7 +644,7 @@ func TestGettingCombinationOfCardsByTwo(t *testing.T){
     cards := []string{"color1,1", "color1,2"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
-    bestFormation := getBestFormation(testBoard.Flags[0].South)
+    bestFormation := getBestFormation(testBoard.Flags[0].South, testBoard)
     assert.Equal(t, "wedge", bestFormation)
 }
 
@@ -673,7 +673,7 @@ func TestGetBestFlagFormationPhalanx(t *testing.T){
     cards := []string{"color1,1", "color2,1"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
-    bestFormation := getBestFormation(testBoard.Flags[0].South)
+    bestFormation := getBestFormation(testBoard.Flags[0].South, testBoard)
     assert.Equal(t, "phalanx", bestFormation)
 }
 
@@ -702,7 +702,7 @@ func TestGetBestFlagFormationBattalion(t *testing.T){
     cards := []string{"color1,1", "color1,5"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
-    bestFormation := getBestFormation(testBoard.Flags[0].South)
+    bestFormation := getBestFormation(testBoard.Flags[0].South, testBoard)
     assert.Equal(t, "battalion", bestFormation)
 }
 
@@ -731,7 +731,7 @@ func TestGetBestFlagFormationSkirmish(t *testing.T){
     cards := []string{"color1,1", "color2,3"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
-    bestFormation := getBestFormation(testBoard.Flags[0].South)
+    bestFormation := getBestFormation(testBoard.Flags[0].South, testBoard)
     assert.Equal(t, "skirmish", bestFormation)
 }
 
@@ -760,9 +760,9 @@ func TestGetBestFlagFormationHost(t *testing.T){
     cards := []string{"color1,1", "color2,9"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
-    bestFormation := getBestFormation(testBoard.Flags[0].South)
+    bestFormation := getBestFormation(testBoard.Flags[0].South, testBoard)
     assert.Equal(t, "host", bestFormation)
-}*/
+}
 
 /*func TestShouldNotPlayCardIfItsNotBestFormation(t *testing.T) {
     testPlayer := player.Player{}

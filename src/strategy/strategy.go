@@ -214,14 +214,27 @@ func getHighestCardForHost(myHand []card.Card) (card.Card) {
     return maxValueCard
 }
 
-/*func getBestFormation(cardsMySide []card.Card, currentBoard board.Board) (string) {
+func getBestFormation(cardsMySide []card.Card, currentBoard board.Board) (string) {
     max_formation := "host"
     if len(cardsMySide) < 3 {
         number_of_cards_left := 3 - len(cardsMySide)
-        //myCardCombinations := cardCombinations(currentBoard.GetUnplayedCards(), )
+        myCardCombinations := cardCombinations(currentBoard.GetUnplayedCards(), number_of_cards_left)
+        for index := range myCardCombinations {
+            switch max_formation {
+                case "wedge":
+                    return max_formation
+                case "phalanx":
+                    if checkForHigherThanPhalanx() {
+                        
+                    }
+            }
+            if max_formation == "wedge" {
+                return max_formation
+            } else if max_formation
+        }
     }
     return max_formation
-}*/
+}
 
 /*def __get_max_strength_formation(self, options, unplayed_cards):
         max_formation_object = Formation(max_formation)

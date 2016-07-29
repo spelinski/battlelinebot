@@ -658,37 +658,6 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstHigher(t *testing
     assert.Equal(t,"play 1 color1,8\n",out )
 }
 
-func TestGettingCombinationOfCardsByOne(t *testing.T){
-    threeCardList := []card.Card{card.Card{"color1",1}, card.Card{"color1",2}, card.Card{"color1",3}}
-    actualCombos := cardCombinations (threeCardList, 1)
-    expectedCombos := [][]card.Card{}
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",1}})
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",2}})
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",3}})
-    assert.Equal(t, expectedCombos, actualCombos)
-
-}
-
-func TestGettingCombinationOfCardsByTwo(t *testing.T){
-    threeCardList := []card.Card{card.Card{"color1",1}, card.Card{"color1",2}, card.Card{"color1",3}}
-    actualCombos := cardCombinations (threeCardList, 2)
-    expectedCombos := [][]card.Card{}
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",1},card.Card{"color1",2}})
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",1},card.Card{"color1",3}})
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",2},card.Card{"color1",3}})
-    assert.Equal(t, expectedCombos, actualCombos)
-
-}
-
-func TestGettingCombinationOfCardsByThree(t *testing.T){
-    threeCardList := []card.Card{card.Card{"color1",1}, card.Card{"color1",2}, card.Card{"color1",3}}
-    actualCombos := cardCombinations (threeCardList, 3)
-    expectedCombos := [][]card.Card{}
-    expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",1},card.Card{"color1",2},card.Card{"color1",3}})
-    assert.Equal(t, expectedCombos, actualCombos)
-
-}
-
 func TestGetBestFlagFormationWedge(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"

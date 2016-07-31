@@ -19,7 +19,7 @@ func (b *Board) InitTroopDeck() {
     colorOptions := []string{"color1","color2","color3","color4","color5","color6"}
     for colorIndex := range colorOptions{
         for i := 1; i <= 10; i++ {
-            b.TroopDeck = append(b.TroopDeck, card.Card{colorOptions[colorIndex],i})
+            b.TroopDeck = append(b.TroopDeck, card.Card{colorOptions[colorIndex],i, 0, 0})
         }
     }
 }

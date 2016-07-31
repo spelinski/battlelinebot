@@ -31,13 +31,13 @@ func handleStdOut(testPlayer player.Player, boardInfo board.Board) string {
 func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "north"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.Flags[0].Claimer = "unclaimed"
@@ -56,17 +56,17 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
 func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "north"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
-    flagOneNorthCards := []card.Card{card.Card{"color1",10},
-                                        card.Card{"color1",9},
-                                        card.Card{"color1",8}}
+    flagOneNorthCards := []card.Card{card.Card{"color1",10,0,0},
+                                        card.Card{"color1",9,0,0},
+                                        card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
     testBoard.Flags[0].North = flagOneNorthCards
     testBoard.Flags[0].Claimer = "unclaimed"
@@ -85,13 +85,13 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
 func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",7},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",4}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",7,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.Flags[0].Claimer = "unclaimed"
@@ -110,17 +110,17 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
 func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",7},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",4}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",7,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",4,0,0}}
     testPlayer.Hand = hand
-    flagOneSouthCards := []card.Card{card.Card{"color1",10},
-                                        card.Card{"color1",9},
-                                        card.Card{"color1",8}}
+    flagOneSouthCards := []card.Card{card.Card{"color1",10,0,0},
+                                        card.Card{"color1",9,0,0},
+                                        card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
     testBoard.Flags[0].South = flagOneSouthCards
     testBoard.Flags[0].Claimer = "unclaimed"
@@ -139,13 +139,13 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
 func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.Flags[0].Claimer = "north"
@@ -164,13 +164,13 @@ func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
 func TestContinueWedgeOnFlagOne(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -193,13 +193,13 @@ func TestContinueWedgeOnFlagOne(t *testing.T) {
 func TestContinuePhalanxOnFlagOne(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -224,13 +224,13 @@ func TestContinuePhalanxOnFlagOne(t *testing.T) {
 func TestContinueBattalionOnFlagOne(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color6",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color6",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -264,13 +264,13 @@ func TestContinueBattalionOnFlagOne(t *testing.T) {
 func TestContinueSkirmishOnFlagOne(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1",1},
-                            card.Card{"color2",8},
-                            card.Card{"color3",3},
-                            card.Card{"color4",4},
-                            card.Card{"color5",5},
-                            card.Card{"color5",6},
-                            card.Card{"color1",7}}
+    hand := []card.Card{card.Card{"color1",1,0,0},
+                            card.Card{"color2",8,0,0},
+                            card.Card{"color3",3,0,0},
+                            card.Card{"color4",4,0,0},
+                            card.Card{"color5",5,0,0},
+                            card.Card{"color5",6,0,0},
+                            card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -283,7 +283,6 @@ func TestContinueSkirmishOnFlagOne(t *testing.T) {
     testBoard.Flags[6].Claimer = "unclaimed"
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
-    testBoard.Flags[0].South = []card.Card{card.Card{"color6",2}}
 
     cards := []string{"color6,2"}
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
@@ -312,13 +311,13 @@ func TestContinueSkirmishOnFlagOne(t *testing.T) {
 func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",1}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -342,13 +341,13 @@ func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
 func TestShouldNotContinueAFormationWithTwoCardsPlayed(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",1}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -371,13 +370,13 @@ func TestShouldNotContinueAFormationWithTwoCardsPlayed(t *testing.T) {
 func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneHigher(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",1}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -400,13 +399,13 @@ func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneHigher(t *testing.T) {
 func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneLower(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",1},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",1,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -429,13 +428,13 @@ func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneLower(t *testing.T) {
 func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneHigher(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color4", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",3},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",3}}
+    hand := []card.Card{card.Card{"color4", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",3,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",3,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -458,13 +457,13 @@ func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneHigher(t *testing
 func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneLower(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color4", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",3},
-                            card.Card{"color2",2},
-                            card.Card{"color4",3},
-                            card.Card{"color3",2},
-                            card.Card{"color3",3}}
+    hand := []card.Card{card.Card{"color4", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",3,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color4",3,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color3",3,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -487,13 +486,13 @@ func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneLower(t *testing.
 func TestShouldFinishPhalanxWithTwoCardsPlayed(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color4",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color4",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -516,13 +515,13 @@ func TestShouldFinishPhalanxWithTwoCardsPlayed(t *testing.T) {
 func TestShouldFinishBattalionWithTwoCardsPlayed(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",2},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -545,13 +544,13 @@ func TestShouldFinishBattalionWithTwoCardsPlayed(t *testing.T) {
 func TestShouldFinishSkirmishWithTwoCardsPlayedFirstLower(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",7},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",7,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -574,13 +573,13 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedFirstLower(t *testing.T) {
 func TestShouldFinishSkirmishWithTwoCardsPlayedFirstHigher(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",7},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",7,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -603,13 +602,13 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedFirstHigher(t *testing.T) {
 func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstLower(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",8},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",8,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -632,13 +631,13 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstLower(t *testing.
 func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstHigher(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",8},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",8,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
@@ -770,15 +769,16 @@ func TestGetBestFlagFormationHost(t *testing.T){
 func TestShouldNotPlayCardIfItsNotBestFormation(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
-    hand := []card.Card{card.Card{"color1", 1},
-                            card.Card{"color1",7},
-                            card.Card{"color2",6},
-                            card.Card{"color2",2},
-                            card.Card{"color3",1},
-                            card.Card{"color3",2},
-                            card.Card{"color6",4}}
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",7,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -788,8 +788,57 @@ func TestShouldNotPlayCardIfItsNotBestFormation(t *testing.T) {
     testBoard.Flags[6].Claimer = "unclaimed"
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
-    testBoard.Flags[0].South = []card.Card{card.Card{"color6",8},
-                                                card.Card{"color6",9}}
+    cards := []string{"color6,8", "color6,9"}
+    //1 is 0 since this this function is usually for getting it from the engine which is 1 based
+    testBoard.HandleFlagAddCardCommand(1, "south", cards)
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,"play 2 color2,6\n",out )
+}
+
+func TestShouldContinueBattalionWhenNotBestIfNoHostToStart(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    hand := []card.Card{card.Card{"color1", 1,0,0},
+                            card.Card{"color1",2,0,0},
+                            card.Card{"color2",6,0,0},
+                            card.Card{"color2",2,0,0},
+                            card.Card{"color3",1,0,0},
+                            card.Card{"color3",2,0,0},
+                            card.Card{"color6",4,0,0}}
+    testPlayer.Hand = hand
+    testBoard := board.Board{}
+    testBoard.InitTroopDeck()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    cards := []string{"color6,8", "color6,9"}
+    //1 is 0 since this this function is usually for getting it from the engine which is 1 based
+    testBoard.HandleFlagAddCardCommand(1, "south", cards)
+
+    //Do not play color6, 10
+    cards = []string{"color5,10"}
+    testBoard.HandleFlagAddCardCommand(2, "south", cards)
+    cards = []string{"color5,9"}
+    testBoard.HandleFlagAddCardCommand(3, "south", cards)
+    cards = []string{"color5,8"}
+    testBoard.HandleFlagAddCardCommand(4, "south", cards)
+    cards = []string{"color4,10"}
+    testBoard.HandleFlagAddCardCommand(5, "south", cards)
+    cards = []string{"color4,9"}
+    testBoard.HandleFlagAddCardCommand(6, "south", cards)
+    cards = []string{"color4,8"}
+    testBoard.HandleFlagAddCardCommand(7, "south", cards)
+    cards = []string{"color5,7"}
+    testBoard.HandleFlagAddCardCommand(8, "south", cards)
+    cards = []string{"color4,7"}
+    testBoard.HandleFlagAddCardCommand(9, "south", cards)
+
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 1 color6,4\n",out )
 }

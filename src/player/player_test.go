@@ -44,13 +44,13 @@ func TestHandleRespondingToNameSouth(t *testing.T) {
 func TestHandleHandUpdateFull(t *testing.T) {
 	testPlayer := Player{}
 	testPlayer.HandleHandUpdate([]string{"color1,1", "color2,2", "color3,3", "color4,4", "color5,5", "color6,6", "color1,7"})
-	card1 := card.Card{"color1", 1}
-	card2 := card.Card{"color2", 2}
-	card3 := card.Card{"color3", 3}
-	card4 := card.Card{"color4", 4}
-	card5 := card.Card{"color5", 5}
-	card6 := card.Card{"color6", 6}
-	card7 := card.Card{"color1", 7}
+	card1 := card.Card{"color1", 1,0,0}
+	card2 := card.Card{"color2", 2,0,0}
+	card3 := card.Card{"color3", 3,0,0}
+	card4 := card.Card{"color4", 4,0,0}
+	card5 := card.Card{"color5", 5,0,0}
+	card6 := card.Card{"color6", 6,0,0}
+	card7 := card.Card{"color1", 7,0,0}
 	assert.Equal(t, testPlayer.Hand[0], card1)
 	assert.Equal(t, testPlayer.Hand[1], card2)
 	assert.Equal(t, testPlayer.Hand[2], card3)
@@ -63,13 +63,13 @@ func TestHandleHandUpdateFull(t *testing.T) {
 func TestHandleHandUpdateFullTwice(t *testing.T) {
 	testPlayer := Player{}
 	testPlayer.HandleHandUpdate([]string{"color1,1", "color2,2", "color3,3", "color4,4", "color5,5", "color6,6", "color1,7"})
-	card1 := card.Card{"color1", 1}
-	card2 := card.Card{"color2", 2}
-	card3 := card.Card{"color3", 3}
-	card4 := card.Card{"color4", 4}
-	card5 := card.Card{"color5", 5}
-	card6 := card.Card{"color6", 6}
-	card7 := card.Card{"color1", 7}
+	card1 := card.Card{"color1", 1,0,0}
+	card2 := card.Card{"color2", 2,0,0}
+	card3 := card.Card{"color3", 3,0,0}
+	card4 := card.Card{"color4", 4,0,0}
+	card5 := card.Card{"color5", 5,0,0}
+	card6 := card.Card{"color6", 6,0,0}
+	card7 := card.Card{"color1", 7,0,0}
 	assert.Equal(t, testPlayer.Hand[0], card1)
 	assert.Equal(t, testPlayer.Hand[1], card2)
 	assert.Equal(t, testPlayer.Hand[2], card3)
@@ -79,13 +79,13 @@ func TestHandleHandUpdateFullTwice(t *testing.T) {
 	assert.Equal(t, testPlayer.Hand[6], card7)
 
 	testPlayer.HandleHandUpdate([]string{"color1,10", "color2,9", "color3,8", "color4,7", "color5,6", "color6,5", "color1,4"})
-	card1 = card.Card{"color1", 10}
-	card2 = card.Card{"color2", 9}
-	card3 = card.Card{"color3", 8}
-	card4 = card.Card{"color4", 7}
-	card5 = card.Card{"color5", 6}
-	card6 = card.Card{"color6", 5}
-	card7 = card.Card{"color1", 4}
+	card1 = card.Card{"color1", 10,0,0}
+	card2 = card.Card{"color2", 9,0,0}
+	card3 = card.Card{"color3", 8,0,0}
+	card4 = card.Card{"color4", 7,0,0}
+	card5 = card.Card{"color5", 6,0,0}
+	card6 = card.Card{"color6", 5,0,0}
+	card7 = card.Card{"color1", 4,0,0}
 	assert.Equal(t, testPlayer.Hand[0], card1)
 	assert.Equal(t, testPlayer.Hand[1], card2)
 	assert.Equal(t, testPlayer.Hand[2], card3)
@@ -98,12 +98,12 @@ func TestHandleHandUpdateFullTwice(t *testing.T) {
 func TestHandleHandUpdateSixCards(t *testing.T) {
 	testPlayer := Player{}
 	testPlayer.HandleHandUpdate([]string{"color1,1", "color2,2", "color3,3", "color4,4", "color5,5", "color6,6"})
-	card1 := card.Card{"color1", 1}
-	card2 := card.Card{"color2", 2}
-	card3 := card.Card{"color3", 3}
-	card4 := card.Card{"color4", 4}
-	card5 := card.Card{"color5", 5}
-	card6 := card.Card{"color6", 6}
+	card1 := card.Card{"color1", 1,0,0}
+	card2 := card.Card{"color2", 2,0,0}
+	card3 := card.Card{"color3", 3,0,0}
+	card4 := card.Card{"color4", 4,0,0}
+	card5 := card.Card{"color5", 5,0,0}
+	card6 := card.Card{"color6", 6,0,0}
 	assert.Equal(t, testPlayer.Hand[0], card1)
 	assert.Equal(t, testPlayer.Hand[1], card2)
 	assert.Equal(t, testPlayer.Hand[2], card3)

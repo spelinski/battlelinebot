@@ -51,7 +51,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 1 color1,7\n",out )
+    assert.Equal(t,"play 5 color1,7\n",out )
 }
 
 func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
@@ -81,7 +81,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color1,7\n",out )
+    assert.Equal(t,"play 5 color1,7\n",out )
 }
 
 func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
@@ -107,7 +107,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 1 color4,7\n",out )
+    assert.Equal(t,"play 5 color4,7\n",out )
 }
 
 func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
@@ -137,7 +137,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color4,7\n",out )
+    assert.Equal(t,"play 5 color4,7\n",out )
 }
 
 func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
@@ -153,17 +153,17 @@ func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
     testPlayer.Hand = hand
     testBoard := board.Board{}
     testBoard.InitTroopDeck()
-    testBoard.Flags[0].Claimer = "north"
+    testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
     testBoard.Flags[3].Claimer = "unclaimed"
-    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "north"
     testBoard.Flags[5].Claimer = "unclaimed"
     testBoard.Flags[6].Claimer = "unclaimed"
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color1,7\n",out )
+    assert.Equal(t,"play 4 color1,7\n",out )
 }
 
 func TestContinueWedgeOnFlagOne(t *testing.T) {
@@ -336,11 +336,11 @@ func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
     testBoard.Flags[7].Claimer = "unclaimed"
     testBoard.Flags[8].Claimer = "unclaimed"
     cards := []string{"color6,5"}
-    //1 is 0 since this this function is usually for getting it from the engine which is 1 based
-    testBoard.HandleFlagAddCardCommand(1, "south", cards)
+    //5 is 4 since this this function is usually for getting it from the engine which is 1 based
+    testBoard.HandleFlagAddCardCommand(5, "south", cards)
 
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color1,2\n",out)
+    assert.Equal(t,"play 4 color1,2\n",out)
 }
 
 func TestShouldNotContinueAFormationWithTwoCardsPlayed(t *testing.T) {
@@ -369,7 +369,7 @@ func TestShouldNotContinueAFormationWithTwoCardsPlayed(t *testing.T) {
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color1,2\n",out )
+    assert.Equal(t,"play 5 color1,2\n",out )
 }
 
 func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneHigher(t *testing.T) {
@@ -797,7 +797,7 @@ func TestShouldNotPlayCardIfItsNotBestFormation(t *testing.T) {
     //1 is 0 since this this function is usually for getting it from the engine which is 1 based
     testBoard.HandleFlagAddCardCommand(1, "south", cards)
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 2 color2,6\n",out )
+    assert.Equal(t,"play 5 color2,6\n",out )
 }
 
 func TestShouldContinueBattalionWhenNotBestIfNoHostToStart(t *testing.T) {

@@ -62,13 +62,13 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
     bestFormation := getBestFormation(flagCardsMySide, myBoard)
     cardToPlay,index = getContinuationForWedge(myHand, flagCardsMySide)
     if cardToPlay.Number > 0 {
-        myHand[index].BestRankPlay = 20
+        myHand[index].BestRankPlay = 32
         myHand[index].BestFlagIndex = flagIndex
     }
     cardToPlay,index = getContinuationForPhalanx(myHand, flagCardsMySide)
     if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 19) {
         if bestFormation != "wedge"{
-            myHand[index].BestRankPlay = 19
+            myHand[index].BestRankPlay = 31
             myHand[index].BestFlagIndex = flagIndex
         } else {
             myHand[index].BestRankPlay = 8
@@ -76,9 +76,9 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
         }
     }
     cardToPlay,index = getContinuationForBattalion(myHand, flagCardsMySide)
-    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 8) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12))) {
+    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 8) || ((myHand[index].BestRankPlay < 29) && (myHand[index].BestRankPlay > 8))) {
         if (bestFormation != "phalanx") && (bestFormation != "wedge") {
-            myHand[index].BestRankPlay = 18
+            myHand[index].BestRankPlay = 30
             myHand[index].BestFlagIndex = flagIndex
         } else {
             myHand[index].BestRankPlay = 6
@@ -86,9 +86,9 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
         }
     }
     cardToPlay,index = getContinuationForSkirmish(myHand, flagCardsMySide)
-    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 6) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12))) {
+    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 6) || ((myHand[index].BestRankPlay < 29) && (myHand[index].BestRankPlay > 8))) {
         if (bestFormation == "skirmish") || (bestFormation == "host") {
-            myHand[index].BestRankPlay = 17
+            myHand[index].BestRankPlay = 29
             myHand[index].BestFlagIndex = flagIndex
         } else {
             myHand[index].BestRankPlay = 4
@@ -99,26 +99,83 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
     tempHand = utilities.CopySliceToSlice(tempHand, myHand)
     for i:=0; i < len(myHand); i++ {
         cardToPlay,index = getHighestCardForHost(tempHand)
-        if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 16) && (myHand[index].BestRankPlay > 12)))  {
+        if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 28) && (myHand[index].BestRankPlay > 8)))  {
             indexForRealHand := utilities.FindElementInSlice(myHand, cardToPlay)
             if bestFormation == "host"{
                 if len(flagCardsMySide) == 0 {
                     if getBestFormation([]card.Card{cardToPlay}, myBoard) == "wedge" {
-                        myHand[indexForRealHand].BestRankPlay = 16
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
-                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 15) {
-                        myHand[indexForRealHand].BestRankPlay = 15
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
-                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 14) {
-                        myHand[indexForRealHand].BestRankPlay = 14
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 28){
+                            myHand[indexForRealHand].BestRankPlay = 28
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 27) {
+                            myHand[indexForRealHand].BestRankPlay = 27
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 26) {
+                            myHand[indexForRealHand].BestRankPlay = 26
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 25) {
+                            myHand[indexForRealHand].BestRankPlay = 25
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 24) {
+                            myHand[indexForRealHand].BestRankPlay = 24
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 23) {
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 23){
+                            myHand[indexForRealHand].BestRankPlay = 23
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 22) {
+                            myHand[indexForRealHand].BestRankPlay = 22
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 21) {
+                            myHand[indexForRealHand].BestRankPlay = 21
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 20) {
+                            myHand[indexForRealHand].BestRankPlay = 20
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 19) {
+                            myHand[indexForRealHand].BestRankPlay = 19
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 18) {
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 18){
+                            myHand[indexForRealHand].BestRankPlay = 18
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 17) {
+                            myHand[indexForRealHand].BestRankPlay = 17
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 16) {
+                            myHand[indexForRealHand].BestRankPlay = 16
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 15) {
+                            myHand[indexForRealHand].BestRankPlay = 15
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 14) {
+                            myHand[indexForRealHand].BestRankPlay = 14
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
                     } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "skirmish") &&  (cardToPlay.BestRankPlay < 13) {
-                        myHand[indexForRealHand].BestRankPlay = 13
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 13){
+                            myHand[indexForRealHand].BestRankPlay = 13
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 12) {
+                            myHand[indexForRealHand].BestRankPlay = 12
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 11) {
+                            myHand[indexForRealHand].BestRankPlay = 11
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 10) {
+                            myHand[indexForRealHand].BestRankPlay = 10
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 9) {
+                            myHand[indexForRealHand].BestRankPlay = 9
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
                     } else if (cardToPlay.BestRankPlay < 2){
                         myHand[indexForRealHand].BestRankPlay = 2
                         myHand[indexForRealHand].BestFlagIndex = flagIndex
                     }
+
                 } else if (cardToPlay.BestRankPlay < 1){
                     myHand[indexForRealHand].BestRankPlay = 1
                     myHand[indexForRealHand].BestFlagIndex = flagIndex
@@ -126,17 +183,73 @@ func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Car
             } else {
                 if len(flagCardsMySide) == 0 {
                     if getBestFormation([]card.Card{cardToPlay}, myBoard) == "wedge" {
-                        myHand[indexForRealHand].BestRankPlay = 16
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
-                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 15) {
-                        myHand[indexForRealHand].BestRankPlay = 15
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
-                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 14) {
-                        myHand[indexForRealHand].BestRankPlay = 14
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 28){
+                            myHand[indexForRealHand].BestRankPlay = 28
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 27) {
+                            myHand[indexForRealHand].BestRankPlay = 27
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 26) {
+                            myHand[indexForRealHand].BestRankPlay = 26
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 25) {
+                            myHand[indexForRealHand].BestRankPlay = 25
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 24) {
+                            myHand[indexForRealHand].BestRankPlay = 24
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 23) {
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 23){
+                            myHand[indexForRealHand].BestRankPlay = 23
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 22) {
+                            myHand[indexForRealHand].BestRankPlay = 22
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 21) {
+                            myHand[indexForRealHand].BestRankPlay = 21
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 20) {
+                            myHand[indexForRealHand].BestRankPlay = 20
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 19) {
+                            myHand[indexForRealHand].BestRankPlay = 19
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 18) {
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 18){
+                            myHand[indexForRealHand].BestRankPlay = 18
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 17) {
+                            myHand[indexForRealHand].BestRankPlay = 17
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 16) {
+                            myHand[indexForRealHand].BestRankPlay = 16
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 15) {
+                            myHand[indexForRealHand].BestRankPlay = 15
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 14) {
+                            myHand[indexForRealHand].BestRankPlay = 14
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
                     } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "skirmish") &&  (cardToPlay.BestRankPlay < 13) {
-                        myHand[indexForRealHand].BestRankPlay = 13
-                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        if (flagIndex == 4) && (myHand[index].BestRankPlay < 13){
+                            myHand[indexForRealHand].BestRankPlay = 13
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 3 || flagIndex == 5) && (myHand[index].BestRankPlay < 12) {
+                            myHand[indexForRealHand].BestRankPlay = 12
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 2 || flagIndex == 6) && (myHand[index].BestRankPlay < 11) {
+                            myHand[indexForRealHand].BestRankPlay = 11
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 1 || flagIndex == 7) && (myHand[index].BestRankPlay < 10) {
+                            myHand[indexForRealHand].BestRankPlay = 10
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        } else if (flagIndex == 0 || flagIndex == 8) && (myHand[index].BestRankPlay < 9) {
+                            myHand[indexForRealHand].BestRankPlay = 9
+                            myHand[indexForRealHand].BestFlagIndex = flagIndex
+                        }
                     } else if (cardToPlay.BestRankPlay < 2){
                         myHand[indexForRealHand].BestRankPlay = 2
                         myHand[indexForRealHand].BestFlagIndex = flagIndex
@@ -290,7 +403,7 @@ func getHighestCardForHost(myHand []card.Card) (card.Card,int) {
     maxValueCard := card.Card{"color1", 0,0,0}
     returnIndex := -1
     for index := range myHand {
-        if (myHand[index].Number > maxValueCard.Number) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12)))  {
+        if (myHand[index].Number > maxValueCard.Number) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 29) && (myHand[index].BestRankPlay > 8)))  {
             maxValueCard = myHand[index]
             returnIndex = index
         }

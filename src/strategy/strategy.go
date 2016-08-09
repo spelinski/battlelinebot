@@ -18,30 +18,25 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
     maxScore := 0
     playIndex := 0
     cardToPlay := playerCards[0]
-    score := 0
     finalCardToPlay := cardToPlay
     for index := range flagOptions {
         if canPlay(flagOptions[index], direction) {
             if direction == "north" {
-                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].North, playerCards, boardInfo, index)
+                determineBestCardForThisFlag(flagOptions[index].North, playerCards, boardInfo, index)
             } else {
-                score,cardToPlay = determineBestCardForThisFlag(flagOptions[index].South, playerCards, boardInfo, index)
-            }
-            if score > maxScore {
-                maxScore = score
-                finalCardToPlay = cardToPlay
-                playIndex = index+1
+                determineBestCardForThisFlag(flagOptions[index].South, playerCards, boardInfo, index)
             }
         }
     }
-    if maxScore == 0 {
-        maxBackupScore := 0
-        for handIndex := range playerCards{
-            if playerCards[handIndex].BestRankPlay > maxBackupScore {
-                maxBackupScore = playerCards[handIndex].BestRankPlay
-                playIndex = playerCards[handIndex].BestFlagIndex+1
-                finalCardToPlay = playerCards[handIndex]
-            }
+    for handIndex := range playerCards{
+        if playerCards[handIndex].BestRankPlay > maxScore {
+            maxScore = playerCards[handIndex].BestRankPlay
+            playIndex = playerCards[handIndex].BestFlagIndex+1
+            finalCardToPlay = playerCards[handIndex]
+        } else if (playerCards[handIndex].BestRankPlay == maxScore) && (playerCards[handIndex].Number > finalCardToPlay.Number) {
+            maxScore = playerCards[handIndex].BestRankPlay
+            playIndex = playerCards[handIndex].BestFlagIndex+1
+            finalCardToPlay = playerCards[handIndex]
         }
     }
     return finalCardToPlay,playIndex
@@ -60,71 +55,100 @@ func canPlay(flagAttempt board.Flag, direction string) bool {
     return false
 }
 
-func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Card, myBoard board.Board, flagIndex int) (int, card.Card) {
+func determineBestCardForThisFlag(flagCardsMySide []card.Card, myHand []card.Card, myBoard board.Board, flagIndex int) {
     cardToPlay := card.Card{"color1", 0,0,0}
     index := -1
 
     bestFormation := getBestFormation(flagCardsMySide, myBoard)
     cardToPlay,index = getContinuationForWedge(myHand, flagCardsMySide)
     if cardToPlay.Number > 0 {
-        myHand[index].BestRankPlay = 10
+        myHand[index].BestRankPlay = 20
         myHand[index].BestFlagIndex = flagIndex
-        return 10,cardToPlay
     }
     cardToPlay,index = getContinuationForPhalanx(myHand, flagCardsMySide)
-    if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 9) {
+    if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 19) {
         if bestFormation != "wedge"{
-            myHand[index].BestRankPlay = 9
+            myHand[index].BestRankPlay = 19
             myHand[index].BestFlagIndex = flagIndex
-            return 9,cardToPlay
         } else {
             myHand[index].BestRankPlay = 8
             myHand[index].BestFlagIndex = flagIndex
         }
     }
     cardToPlay,index = getContinuationForBattalion(myHand, flagCardsMySide)
-    if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 7) {
+    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 8) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12))) {
         if (bestFormation != "phalanx") && (bestFormation != "wedge") {
-            myHand[index].BestRankPlay = 7
+            myHand[index].BestRankPlay = 18
             myHand[index].BestFlagIndex = flagIndex
-            return 7,cardToPlay
         } else {
             myHand[index].BestRankPlay = 6
             myHand[index].BestFlagIndex = flagIndex
         }
     }
     cardToPlay,index = getContinuationForSkirmish(myHand, flagCardsMySide)
-    if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 5) {
+    if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 6) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12))) {
         if (bestFormation == "skirmish") || (bestFormation == "host") {
-            myHand[index].BestRankPlay = 5
+            myHand[index].BestRankPlay = 17
             myHand[index].BestFlagIndex = flagIndex
-            return 5,cardToPlay
         } else {
             myHand[index].BestRankPlay = 4
             myHand[index].BestFlagIndex = flagIndex
         }
     }
-    cardToPlay,index = getHighestCardForHost(myHand)
-    if (cardToPlay.Number > 0) && (myHand[index].BestRankPlay < 3) {
-        if bestFormation == "host"{
-            if len(flagCardsMySide) == 0 {
-                myHand[index].BestRankPlay = 3
-                myHand[index].BestFlagIndex = flagIndex
-                return 3,cardToPlay
+    tempHand := []card.Card{}
+    tempHand = utilities.CopySliceToSlice(tempHand, myHand)
+    for i:=0; i < len(myHand); i++ {
+        cardToPlay,index = getHighestCardForHost(tempHand)
+        if (cardToPlay.Number > 0) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 16) && (myHand[index].BestRankPlay > 12)))  {
+            indexForRealHand := utilities.FindElementInSlice(myHand, cardToPlay)
+            if bestFormation == "host"{
+                if len(flagCardsMySide) == 0 {
+                    if getBestFormation([]card.Card{cardToPlay}, myBoard) == "wedge" {
+                        myHand[indexForRealHand].BestRankPlay = 16
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 15) {
+                        myHand[indexForRealHand].BestRankPlay = 15
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 14) {
+                        myHand[indexForRealHand].BestRankPlay = 14
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "skirmish") &&  (cardToPlay.BestRankPlay < 13) {
+                        myHand[indexForRealHand].BestRankPlay = 13
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (cardToPlay.BestRankPlay < 2){
+                        myHand[indexForRealHand].BestRankPlay = 2
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    }
+                } else if (cardToPlay.BestRankPlay < 1){
+                    myHand[indexForRealHand].BestRankPlay = 1
+                    myHand[indexForRealHand].BestFlagIndex = flagIndex
+                }
+            } else {
+                if len(flagCardsMySide) == 0 {
+                    if getBestFormation([]card.Card{cardToPlay}, myBoard) == "wedge" {
+                        myHand[indexForRealHand].BestRankPlay = 16
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "phalanx") &&  (cardToPlay.BestRankPlay < 15) {
+                        myHand[indexForRealHand].BestRankPlay = 15
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "battalion") &&  (cardToPlay.BestRankPlay < 14) {
+                        myHand[indexForRealHand].BestRankPlay = 14
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (getBestFormation([]card.Card{cardToPlay}, myBoard) == "skirmish") &&  (cardToPlay.BestRankPlay < 13) {
+                        myHand[indexForRealHand].BestRankPlay = 13
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    } else if (cardToPlay.BestRankPlay < 2){
+                        myHand[indexForRealHand].BestRankPlay = 2
+                        myHand[indexForRealHand].BestFlagIndex = flagIndex
+                    }
+                } else if (cardToPlay.BestRankPlay < 1){
+                    myHand[indexForRealHand].BestRankPlay = 1
+                    myHand[indexForRealHand].BestFlagIndex = flagIndex
+                }
             }
-            myHand[index].BestRankPlay = 1
-            myHand[index].BestFlagIndex = flagIndex
-            return 1,cardToPlay
-        } else {
-             if len(flagCardsMySide) == 0 {
-                myHand[index].BestRankPlay = 3
-                myHand[index].BestFlagIndex = flagIndex
-            }
-            myHand[index].BestRankPlay = 1
-            myHand[index].BestFlagIndex = flagIndex
+            tempHand = append(tempHand[:index], tempHand[index+1:]...)
         }
     }
-    return 0,cardToPlay
 }
 
 func getContinuationForWedge(myHand []card.Card, flagCardsMySide []card.Card) (card.Card, int) {
@@ -132,6 +156,9 @@ func getContinuationForWedge(myHand []card.Card, flagCardsMySide []card.Card) (c
     index := -1
     if len(flagCardsMySide) == 1{
         continuationCard,index = checkHandForWedgeContinuation(myHand, flagCardsMySide[0], flagCardsMySide[0])
+        if continuationCard.Number == 0 {
+            continuationCard,index = checkHandForWedgeContinuationTwoAway(myHand, flagCardsMySide[0], flagCardsMySide[0])
+        }
     } else if len(flagCardsMySide) == 2 {
         if flagCardsMySide[0].Color != flagCardsMySide[1].Color {
             return continuationCard,index
@@ -152,6 +179,17 @@ func getContinuationForWedge(myHand []card.Card, flagCardsMySide []card.Card) (c
 func checkHandForWedgeContinuation(myHand []card.Card, cardForValueBelow card.Card, cardForValueAbove card.Card) (card.Card,int) {
     valueBelow := cardForValueBelow.Number - 1
     valueAbove := cardForValueAbove.Number + 1
+    for index := range myHand {
+        if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == cardForValueBelow.Color {
+            return myHand[index],index
+        }
+    }
+    return card.Card{"color1", 0,0,0},-1
+}
+
+func checkHandForWedgeContinuationTwoAway(myHand []card.Card, cardForValueBelow card.Card, cardForValueAbove card.Card) (card.Card,int) {
+    valueBelow := cardForValueBelow.Number - 2
+    valueAbove := cardForValueAbove.Number + 2
     for index := range myHand {
         if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) && myHand[index].Color == cardForValueBelow.Color {
             return myHand[index],index
@@ -209,6 +247,9 @@ func getContinuationForSkirmish(myHand []card.Card, flagCardsMySide []card.Card)
     index := -1
     if len(flagCardsMySide) == 1{
         continuationCard,index = checkHandForSkirmishContinuation(myHand, flagCardsMySide[0], flagCardsMySide[0])
+        if continuationCard.Number == 0 {
+            continuationCard,index = checkHandForSkirmishContinuationTwoAway(myHand, flagCardsMySide[0], flagCardsMySide[0])
+        }
     } else if len(flagCardsMySide) == 2 {
         firstMinusSecond := flagCardsMySide[0].Number-flagCardsMySide[1].Number
         secondMinusFirst := flagCardsMySide[1].Number-flagCardsMySide[0].Number
@@ -234,11 +275,22 @@ func checkHandForSkirmishContinuation(myHand []card.Card, cardForValueBelow card
     return card.Card{"color1", 0,0,0},-1
 }
 
+func checkHandForSkirmishContinuationTwoAway(myHand []card.Card, cardForValueBelow card.Card, cardForValueAbove card.Card) (card.Card,int) {
+    valueBelow := cardForValueBelow.Number - 2
+    valueAbove := cardForValueAbove.Number + 2
+    for index := range myHand {
+        if ((myHand[index].Number == valueBelow) || (myHand[index].Number == valueAbove)) {
+            return myHand[index],index
+        }
+    }
+    return card.Card{"color1", 0,0,0},-1
+}
+
 func getHighestCardForHost(myHand []card.Card) (card.Card,int) {
     maxValueCard := card.Card{"color1", 0,0,0}
     returnIndex := -1
     for index := range myHand {
-        if (myHand[index].Number > maxValueCard.Number) && (myHand[index].BestRankPlay < 4) {
+        if (myHand[index].Number > maxValueCard.Number) && ((myHand[index].BestRankPlay < 4) || ((myHand[index].BestRankPlay < 17) && (myHand[index].BestRankPlay > 12)))  {
             maxValueCard = myHand[index]
             returnIndex = index
         }

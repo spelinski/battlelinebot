@@ -17,6 +17,22 @@ func CardCombinations(cardList []card.Card, numberOfCards int) ([][]card.Card) {
     return combinationsOfCards
 }
 
+func CopySliceToSlice(destination []card.Card, source []card.Card) ([]card.Card) {
+    for index := range source {
+        destination = append(destination, source[index])
+    }
+    return destination
+}
+
+func FindElementInSlice(sliceToSearch []card.Card, elementToFind card.Card) (int) {
+    for index := range sliceToSearch {
+        if sliceToSearch[index] == elementToFind {
+            return index
+        }
+    }
+    return -1
+}
+
 //Pulled from https://play.golang.org/p/JEgfXR2zSH
 func combinations(iterable []card.Card, r int) ([][]card.Card) {
 

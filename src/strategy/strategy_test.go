@@ -40,6 +40,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -68,6 +69,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
                                         card.Card{"color1",9,0,0},
                                         card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].North = flagOneNorthCards
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
@@ -94,6 +96,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
                             card.Card{"color1",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -122,6 +125,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
                                         card.Card{"color1",9,0,0},
                                         card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].South = flagOneSouthCards
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
@@ -148,6 +152,7 @@ func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
+    testBoard.InitTroopDeck()
     testBoard.Flags[0].Claimer = "north"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"

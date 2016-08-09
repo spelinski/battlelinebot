@@ -33,5 +33,17 @@ func TestGettingCombinationOfCardsByThree(t *testing.T){
     expectedCombos := [][]card.Card{}
     expectedCombos = append(expectedCombos,[]card.Card{card.Card{"color1",1,0,0},card.Card{"color1",2,0,0},card.Card{"color1",3,0,0}})
     assert.Equal(t, expectedCombos, actualCombos)
+}
 
+func TestCopySliceToSlice(t *testing.T){
+    myHand := []card.Card{card.Card{"color1",1,0,0}, card.Card{"color1",2,0,0}, card.Card{"color1",3,0,0}}
+    tempHand := []card.Card{}
+    tempHand = CopySliceToSlice(tempHand, myHand)
+    assert.Equal(t, myHand, tempHand)
+}
+
+func TestFindElementInSlice(t *testing.T) {
+    myHand := []card.Card{card.Card{"color1",1,0,0}, card.Card{"color1",2,0,0}, card.Card{"color1",3,0,0}}
+    index := FindElementInSlice(myHand, card.Card{"color1",2,0,0})
+    assert.Equal(t, 1, index)
 }

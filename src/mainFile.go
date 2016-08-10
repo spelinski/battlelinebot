@@ -10,7 +10,7 @@ import (
 func main() {
 	mapReader := bufio.NewReader(os.Stdin)
 	myParser := parser.Parser{}
-    myParser.Board.InitTroopDeck()
+    myParser.Board.InitDecks()
 	for {
 		var input string
 		isPrefix := true

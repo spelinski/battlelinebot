@@ -1,8 +1,9 @@
 package player
 
 import (
+    "board"
 	"card"
-	"fmt"
+    "fmt"
 )
 
 var botName = "SynergyBot"
@@ -17,6 +18,8 @@ func (p *Player) HandleRespondingToName(direction string) {
 	fmt.Println("player " + direction + " " + botName)
 }
 
-func (p *Player) HandleHandUpdate(cards []string) {
+func (p *Player) HandleHandUpdate(cards []string, myBoard board.Board) (board.Board) {
 	p.Hand = card.GetListOfCardsFromStringArray(cards)
+    myBoard.RemoveCardsFromEnemyDeck(p.Hand)
+    return myBoard
 }

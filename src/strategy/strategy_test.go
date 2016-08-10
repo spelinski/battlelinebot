@@ -40,7 +40,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -69,7 +69,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerNorth(t *testing.T) {
                                         card.Card{"color1",9,0,0},
                                         card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].North = flagOneNorthCards
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
@@ -96,7 +96,7 @@ func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerSouth(t *testing.T) {
                             card.Card{"color1",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -125,7 +125,7 @@ func TestHandleGoPlayCommandFlagOneSideFullNotClaimedPlayerSouth(t *testing.T) {
                                         card.Card{"color1",9,0,0},
                                         card.Card{"color1",8,0,0}}
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].South = flagOneSouthCards
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
@@ -152,7 +152,7 @@ func TestHandleGoPlayCommandEmptyBoardClaimedPlayerSouth(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -178,7 +178,7 @@ func TestContinueWedgeOnFlagOne(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -207,7 +207,7 @@ func TestContinuePhalanxOnFlagOne(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -238,7 +238,7 @@ func TestContinueBattalionOnFlagOne(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -278,7 +278,7 @@ func TestContinueSkirmishOnFlagOne(t *testing.T) {
                             card.Card{"color1",7,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -310,7 +310,7 @@ func TestContinueSkirmishOnFlagOne(t *testing.T) {
     testBoard.HandleFlagAddCardCommand(6, "north", spoilerCardsBattalionTwo)
 
     out := handleStdOut(testPlayer, testBoard)
-    assert.Equal(t,"play 1 color1,1\n",out )
+    assert.Equal(t,"play 1 color3,3\n",out )
 }
 
 func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
@@ -325,7 +325,7 @@ func TestPlayingOnNewFlagIfNotAbleToContinueFormation(t *testing.T) {
                             card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -355,7 +355,7 @@ func TestShouldNotContinueAFormationWithTwoCardsPlayed(t *testing.T) {
                             card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -384,7 +384,7 @@ func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneHigher(t *testing.T) {
                             card.Card{"color4",1,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -413,7 +413,7 @@ func TestShouldFinishWedgeWithTwoCardsPlayedFirstOneLower(t *testing.T) {
                             card.Card{"color4",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -442,7 +442,7 @@ func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneHigher(t *testing
                             card.Card{"color4",3,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -471,7 +471,7 @@ func TestShouldFinishWedgeWithTwoCardsPlayedGapInMiddleFirstOneLower(t *testing.
                             card.Card{"color3",3,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -500,7 +500,7 @@ func TestShouldFinishPhalanxWithTwoCardsPlayed(t *testing.T) {
                             card.Card{"color4",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -529,7 +529,7 @@ func TestShouldFinishBattalionWithTwoCardsPlayed(t *testing.T) {
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -558,7 +558,7 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedFirstLower(t *testing.T) {
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -587,7 +587,7 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedFirstHigher(t *testing.T) {
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -616,7 +616,7 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstLower(t *testing.
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -645,7 +645,7 @@ func TestShouldFinishSkirmishWithTwoCardsPlayedGapInMiddleFirstHigher(t *testing
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -666,7 +666,7 @@ func TestGetBestFlagFormationWedge(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -687,7 +687,7 @@ func TestGetBestFlagFormationPhalanx(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -710,7 +710,7 @@ func TestGetBestFlagFormationBattalion(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -733,7 +733,7 @@ func TestGetBestFlagFormationSkirmish(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -754,7 +754,7 @@ func TestGetBestFlagFormationHost(t *testing.T){
     testPlayer := player.Player{}
     testPlayer.Direction = "south"
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -783,7 +783,7 @@ func TestShouldNotPlayCardIfItsNotBestFormation(t *testing.T) {
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -812,7 +812,7 @@ func TestShouldContinueBattalionWhenNotBestIfNoHostToStart(t *testing.T) {
                             card.Card{"color6",4,0,0}}
     testPlayer.Hand = hand
     testBoard := board.Board{}
-    testBoard.InitTroopDeck()
+    testBoard.InitDecks()
     testBoard.Flags[0].Claimer = "unclaimed"
     testBoard.Flags[1].Claimer = "unclaimed"
     testBoard.Flags[2].Claimer = "unclaimed"
@@ -846,4 +846,88 @@ func TestShouldContinueBattalionWhenNotBestIfNoHostToStart(t *testing.T) {
 
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,"play 1 color6,4\n",out )
+}
+
+func TestGetBestEnemyFormationWedge(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    bestFormation := getBestEnemyFormation(testBoard.Flags[0].North, testBoard)
+    assert.Equal(t, "wedge", bestFormation)
+}
+
+func TestGetBestEnemyFormationFullWedge(t *testing.T) {
+    testPlayer := player.Player{}
+    testPlayer.Direction = "south"
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+    cards := []string{"color1,1","color1,2","color1,3"}
+    //1 is 0 since this this function is usually for getting it from the engine which is 1 based
+    testBoard.HandleFlagAddCardCommand(1, "north", cards)
+    bestFormation := getBestEnemyFormation(testBoard.Flags[0].North, testBoard)
+    assert.Equal(t, "wedge", bestFormation)
+}
+
+func TestShouldPlayToContinueWedgeOnOneAwayIfItIsBothTwoAwayAndOne(t *testing.T) {
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+
+    testPlayer := player.Player{}
+    testPlayer.Direction = "north"
+    handToBeAdded := []string{"color2,5","color3,6","color5,10","color6,8","color2,4","color1,9","color3,8"}
+    testBoard = testPlayer.HandleHandUpdate(handToBeAdded, testBoard)
+    cards := []string{"color1,2"}
+    testBoard.HandleFlagAddCardCommand(2, "north", cards)
+    cards = []string{"color3,4"}
+    testBoard.HandleFlagAddCardCommand(3, "north", cards)
+    cards = []string{"color5,6"}
+    testBoard.HandleFlagAddCardCommand(4, "north", cards)
+    cards = []string{"color4,10","color4,9"}
+    testBoard.HandleFlagAddCardCommand(4, "south", cards)
+    cards = []string{"color6,10"}
+    testBoard.HandleFlagAddCardCommand(5, "north", cards)
+    cards = []string{"color1,10"}
+    testBoard.HandleFlagAddCardCommand(5, "south", cards)
+    cards = []string{"color4,5","color4,4"}
+    testBoard.HandleFlagAddCardCommand(6, "north", cards)
+    cards = []string{"color2,7","color2,6"}
+    testBoard.HandleFlagAddCardCommand(6, "south", cards)
+
+
+    cards = []string{"color3,7"}
+    testBoard.HandleFlagAddCardCommand(7, "north", cards)
+    cards = []string{"color6,5","color6,3"}
+    testBoard.HandleFlagAddCardCommand(7, "south", cards)
+
+
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 7 color3,8\n",out )
 }

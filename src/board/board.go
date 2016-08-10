@@ -13,13 +13,15 @@ type Flag struct {
 type Board struct {
 	Flags [9]Flag
     TroopDeck []card.Card
+    EnemyDeck []card.Card
 }
 
-func (b *Board) InitTroopDeck() {
+func (b *Board) InitDecks() {
     colorOptions := []string{"color1","color2","color3","color4","color5","color6"}
     for colorIndex := range colorOptions{
         for i := 1; i <= 10; i++ {
             b.TroopDeck = append(b.TroopDeck, card.Card{colorOptions[colorIndex],i, 0, 0})
+            b.EnemyDeck = append(b.EnemyDeck, card.Card{colorOptions[colorIndex],i, 0, 0})
         }
     }
 }
@@ -38,6 +40,7 @@ func (b *Board) HandleFlagAddCardCommand(flagIndex int, flagDirection string, ca
 		b.Flags[flagIndex-1].South = cardList
 	}
     b.removeCardsFromTroopDeck(cardList)
+    b.RemoveCardsFromEnemyDeck(cardList)
 }
 
 func (b *Board) removeCardsFromTroopDeck(cardsToRemove []card.Card) {
@@ -66,4 +69,19 @@ func (b *Board) GetPlayedCards() ([]card.Card) {
 
 func (b *Board) GetUnplayedCards() ([]card.Card) {
     return b.TroopDeck
+}
+
+func (b *Board) GetEnemyAvailCards() ([]card.Card) {
+    return b.EnemyDeck
+}
+
+func (b *Board) RemoveCardsFromEnemyDeck(cardsToRemove []card.Card) {
+    for removeCardIndex := range cardsToRemove {
+        for enemyDeckIndex := range b.EnemyDeck {
+            if b.EnemyDeck[enemyDeckIndex] == cardsToRemove[removeCardIndex] {
+                b.EnemyDeck = append(b.EnemyDeck[:enemyDeckIndex], b.EnemyDeck[enemyDeckIndex+1:]...)
+                break
+            }
+        }
+    }
 }

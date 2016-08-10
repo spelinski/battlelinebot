@@ -35,7 +35,7 @@ func (p *Parser) ParseString(command string) error {
 		//Not doing anything with this right now
 	} else if commandType == HAND_COMMAND {
 		parsedCommand = strings.Split(parsedCommand[1], " ")
-		p.Player.HandleHandUpdate(parsedCommand)
+		p.Board = p.Player.HandleHandUpdate(parsedCommand, p.Board)
 	} else if commandType == FLAG_CLAIM_COMMAND {
 		parsedCommand = append(parsedCommand[:0], parsedCommand[1:]...)
 		p.Board.HandleFlagClaimCommand(parsedCommand)

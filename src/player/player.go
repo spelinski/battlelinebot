@@ -6,7 +6,7 @@ import (
     "fmt"
 )
 
-var botName = "SynergyBot"
+var botName = "SynergyBotTesting"
 
 type Player struct {
 	Direction string

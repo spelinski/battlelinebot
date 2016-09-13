@@ -5,7 +5,7 @@ import (
     "testing"
     "board"
     "player"
-    "card"
+    //"card"
     "os"
     "bytes"
     "io"
@@ -28,7 +28,7 @@ func handleStdOut(testPlayer player.Player, boardInfo board.Board) string {
     return out
 }
 
-func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
+/*func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "north"
     hand := []card.Card{card.Card{"color1",1,0,0},
@@ -930,4 +930,91 @@ func TestShouldPlayToContinueWedgeOnOneAwayIfItIsBothTwoAwayAndOne(t *testing.T)
 
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,"play 7 color3,8\n",out )
+}
+
+func TestShouldPlayFirstCardWhereOpponentDid(t *testing.T) {
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+
+    testPlayer := player.Player{}
+    testPlayer.Direction = "north"
+    handToBeAdded := []string{"color2,5","color3,6","color5,10","color6,8","color2,4","color1,9","color3,8"}
+    testBoard = testPlayer.HandleHandUpdate(handToBeAdded, testBoard)
+    cards := []string{"color4,10"}
+    testBoard.HandleFlagAddCardCommand(4, "south", cards)
+
+
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 4 color5,10\n",out )
+}*/
+
+func TestShouldPlayFirstCardWhereOpponentDidSecondPlay(t *testing.T) {
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+
+    testPlayer := player.Player{}
+    testPlayer.Direction = "north"
+    handToBeAdded := []string{"color2,5","color3,6","color5,10","color6,8","color2,4","color1,9","color3,8"}
+    testBoard = testPlayer.HandleHandUpdate(handToBeAdded, testBoard)
+    cards := []string{"color4,10"}
+    testBoard.HandleFlagAddCardCommand(3, "south", cards)
+    cards = []string{"color3,10"}
+    testBoard.HandleFlagAddCardCommand(3, "north", cards)
+    cards = []string{"color6,10"}
+    testBoard.HandleFlagAddCardCommand(4, "south", cards)
+
+
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 4 color6,8\n",out )
+}
+
+func TestShouldPlayFirstCardWhereOpponentDidFlagOne(t *testing.T) {
+    testBoard := board.Board{}
+    testBoard.InitDecks()
+    testBoard.Flags[0].Claimer = "unclaimed"
+    testBoard.Flags[1].Claimer = "unclaimed"
+    testBoard.Flags[2].Claimer = "unclaimed"
+    testBoard.Flags[3].Claimer = "unclaimed"
+    testBoard.Flags[4].Claimer = "unclaimed"
+    testBoard.Flags[5].Claimer = "unclaimed"
+    testBoard.Flags[6].Claimer = "unclaimed"
+    testBoard.Flags[7].Claimer = "unclaimed"
+    testBoard.Flags[8].Claimer = "unclaimed"
+
+    testPlayer := player.Player{}
+    testPlayer.Direction = "north"
+    handToBeAdded := []string{"color2,5","color3,6","color5,8","color6,8","color2,4","color5,9","color3,8"}
+    testBoard = testPlayer.HandleHandUpdate(handToBeAdded, testBoard)
+    cards := []string{"color4,10"}
+    testBoard.HandleFlagAddCardCommand(3, "south", cards)
+    cards = []string{"color3,10"}
+    testBoard.HandleFlagAddCardCommand(3, "north", cards)
+    cards = []string{"color6,10"}
+    testBoard.HandleFlagAddCardCommand(4, "south", cards)
+    cards = []string{"color1,10"}
+    testBoard.HandleFlagAddCardCommand(4, "north", cards)
+    cards = []string{"color2,10"}
+    testBoard.HandleFlagAddCardCommand(1, "south", cards)
+
+
+    out := handleStdOut(testPlayer, testBoard)
+    assert.Equal(t,"play 1 color5,8\n",out )
 }

@@ -5,7 +5,7 @@ import (
     "testing"
     "board"
     "player"
-    //"card"
+    "card"
     "os"
     "bytes"
     "io"
@@ -28,7 +28,7 @@ func handleStdOut(testPlayer player.Player, boardInfo board.Board) string {
     return out
 }
 
-/*func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
+func TestHandleGoPlayCommandEmptyBoardNotClaimedPlayerNorth(t *testing.T) {
     testPlayer := player.Player{}
     testPlayer.Direction = "north"
     hand := []card.Card{card.Card{"color1",1,0,0},
@@ -955,7 +955,7 @@ func TestShouldPlayFirstCardWhereOpponentDid(t *testing.T) {
 
     out := handleStdOut(testPlayer, testBoard)
     assert.Equal(t,"play 4 color5,10\n",out )
-}*/
+}
 
 func TestShouldPlayFirstCardWhereOpponentDidSecondPlay(t *testing.T) {
     testBoard := board.Board{}

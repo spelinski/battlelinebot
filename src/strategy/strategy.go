@@ -7,7 +7,6 @@ import (
     "fmt"
     "card"
     "strconv"
-    "os"
 )
 
 func HandleGoPlayCommand(playerInfo player.Player, boardInfo board.Board) {
@@ -23,6 +22,30 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
 
     //This assumes 9 flags
     arrayOfIndexes := [9]int{4,3,5,2,6,1,7,0,8}
+    arrayOfIndexes = orderFlagPriorities(arrayOfIndexes, direction, flagOptions)
+    for arrayIndex := range arrayOfIndexes {
+        index := arrayOfIndexes[arrayIndex]
+        if canPlay(flagOptions[index], direction) {
+            determineBestCardForThisFlag(flagOptions, playerCards, boardInfo, index, direction)
+        }
+    }
+    for handIndex := range playerCards{
+        if playerCards[handIndex].BestRankPlay < 9000 {
+            if (playerCards[handIndex].BestRankPlay > maxScore) || ((playerCards[handIndex].BestRankPlay == maxScore) && (playerCards[handIndex].Number > finalCardToPlay.Number)) {
+                maxScore = playerCards[handIndex].BestRankPlay
+                playIndex = playerCards[handIndex].BestFlagIndex+1
+                finalCardToPlay = playerCards[handIndex]
+            }
+        }
+    }
+    for handIndex := range playerCards{
+        playerCards[handIndex].BestRankPlay = 0
+        playerCards[handIndex].BestFlagIndex = 0
+    }
+    return finalCardToPlay,playIndex
+}
+
+func orderFlagPriorities(arrayOfIndexes [9]int, direction string, flagOptions [9]board.Flag) [9]int {
     numberOfCardsOnFlag := 0
     cardsOnFirstPrioFlag := 0
     cardsOnPriorFlag := 0
@@ -45,49 +68,18 @@ func getBestCardAndFlagToPlayOn(flagOptions [9]board.Flag, playerCards []card.Ca
                 cardsOnPriorFlag = 3
             }
         }
-        if index == 0{
-            fmt.Fprintln(os.Stderr, cardsOnPriorFlag, numberOfCardsOnFlag, cardsOnFirstPrioFlag)
-        }
         if numberOfCardsOnFlag > cardsOnFirstPrioFlag {
-            if index == 0{
-                fmt.Fprintln(os.Stderr, "in this for 0")
-            }
             tempInt := arrayOfIndexes[0]
             arrayOfIndexes[0] = arrayOfIndexes[arrayIndex]
             arrayOfIndexes[arrayIndex] = tempInt
         } else if numberOfCardsOnFlag > cardsOnPriorFlag {
-            if index == 0{
-                fmt.Fprintln(os.Stderr, "in here for 0")
-            }
             tempInt := arrayOfIndexes[arrayIndex-1]
-            if index == 0{
-                fmt.Fprintln(os.Stderr, "temp ", tempInt)
-            }
             arrayOfIndexes[arrayIndex-1] = arrayOfIndexes[arrayIndex]
             arrayOfIndexes[arrayIndex] = tempInt
-        }
-        fmt.Fprintln(os.Stderr, arrayOfIndexes)
-    }
-    for arrayIndex := range arrayOfIndexes {
-        index := arrayOfIndexes[arrayIndex]
-        if canPlay(flagOptions[index], direction) {
-            determineBestCardForThisFlag(flagOptions, playerCards, boardInfo, index, direction)
+            return orderFlagPriorities(arrayOfIndexes, direction, flagOptions)
         }
     }
-    for handIndex := range playerCards{
-        if playerCards[handIndex].BestRankPlay < 9000 {
-            if (playerCards[handIndex].BestRankPlay > maxScore) || ((playerCards[handIndex].BestRankPlay == maxScore) && (playerCards[handIndex].Number > finalCardToPlay.Number)) {
-                maxScore = playerCards[handIndex].BestRankPlay
-                playIndex = playerCards[handIndex].BestFlagIndex+1
-                finalCardToPlay = playerCards[handIndex]
-            }
-        }
-    }
-    for handIndex := range playerCards{
-        playerCards[handIndex].BestRankPlay = 0
-        playerCards[handIndex].BestFlagIndex = 0
-    }
-    return finalCardToPlay,playIndex
+    return arrayOfIndexes
 }
 
 func canPlay(flagAttempt board.Flag, direction string) bool {
